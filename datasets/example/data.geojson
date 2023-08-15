@@ -1,0 +1,53 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "NINA huset",
+        "city": "Trondheim",
+        "type": "main office"
+      },
+      "geometry": {
+        "coordinates": [10.406454330024303, 63.41410123399885],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "NINA Bergen",
+        "city": "Bergen",
+        "type": "office"
+      },
+      "geometry": {
+        "coordinates": [5.331804511691928, 60.38148561949424],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "NINA Oslo",
+        "city": "Oslo",
+        "type": "office"
+      },
+      "geometry": {
+        "coordinates": [10.73153398863056, 59.94790098790767],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "NINA Tromsø",
+        "city": "Tromsø",
+        "type": "office"
+      },
+      "geometry": {
+        "coordinates": [18.948333008938988, 69.64368109755495],
+        "type": "Point"
+      }
+    }
+  ]
+}

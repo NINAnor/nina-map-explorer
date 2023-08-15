@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>NINA map explorer</title>
+    <meta property="og:description" content="NINA map explorer" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@3.3.0/dist/maplibre-gl.css"
+    />
+    <script src="https://unpkg.com/maplibre-gl@3.3.0/dist/maplibre-gl.js"></script>
+    <script src="https://unpkg.com/pmtiles@2.10.0/dist/index.js"></script>
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+    <div id="info">
+      <h3 class="style-name"><i>Loading dataset...</i></h3>
+      <p class="metadata-description"><i>No description available</i></p>
+      <div>
+        <a href="#" class="metadata-source">Download dataset</a>
+      </div>
+      <h4>Legend</h4>
+      <div class="legend"><i>Loading legend...</i></div>
+    </div>
+    <div id="map"></div>
+    <script src="assets/map.js"></script>
+  </body>
+</html>

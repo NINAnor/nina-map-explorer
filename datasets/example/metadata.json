@@ -1,0 +1,5 @@
+{
+  "style": "style.json",
+  "source": "nina.geojson",
+  "description": "NINA offices across Norway"
+}
