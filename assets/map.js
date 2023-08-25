@@ -93,8 +93,8 @@ fetch(base + "metadata.json")
       .forEach((e) => (e.href = base + metadata.source));
     document
       .querySelectorAll(".metadata-subtitle")
-      .forEach((e) => (e.innerHTML = metadata.subtitle));
+      .forEach((e) => (e.innerHTML = metadata.subtitle || ""));
     document
       .querySelectorAll(".metadata-description")
-      .forEach((e) => (e.innerHTML = metadata.description));
+      .forEach((e) => (e.innerHTML = metadata.description || ""));
   });
