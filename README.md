@@ -27,7 +27,7 @@ Full documentation is available at [gdal.org/drivers/vector/pmtiles.html](https:
 The only requirement is having a web server which supports HTTP bytes serving/ranged requests, such as NGINX.
 
 ```bash
-docker compose up --build
+docker compose up --profile prod --build
 ```
 
-Then, the application can be seen by visiting [http://localhost:8000/#example](http://localhost:8000/#example). The text after the hash symbol specifies which dataset should be loaded, which match the name of the folder.
+Then, the application can be seen by visiting [http://localhost:8000/](http://localhost:8000/).

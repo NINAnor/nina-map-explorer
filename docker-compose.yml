@@ -1,7 +1,23 @@
+x-common-nginx:
+  &common-nginx
+  ports:
+    - 8000:80
+
 services:
   nginx:
+    <<: *common-nginx
+    profiles:
+      - prod
     build: .
     volumes:
       - ./datasets:/var/www/datasets:ro
-    ports:
-      - 8000:80
+  nginx-dev:
+    <<: *common-nginx
+    profiles:
+      - dev
+    image: nginx
+    volumes:
+      - ./datasets:/var/www/datasets:ro
+      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./viewer.html:/var/www/viewer.html:ro
+      - ./assets:/var/www/assets/:ro
