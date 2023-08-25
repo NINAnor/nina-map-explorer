@@ -33,7 +33,8 @@ const map = new maplibregl.Map({
 });
 map.addControl(
   new MaplibreGeocoder(geocoderApi, {
-    maplibregl,
+    mapboxgl: maplibregl,
+    "placeholder": "Søk",
   }),
   "top-left",
 );
@@ -58,7 +59,7 @@ map.on("style.load", () => {
   }
   html += `<tr><td class="block" style="background-color: ${
     color[color.length - 1]
-  }"></td><td><i>others</i></td></tr>`;
+  }"></td><td><i>andre formål</i></td></tr>`;
   html += "</table>";
   document.querySelectorAll(".legend").forEach((e) => (e.innerHTML = html));
 });
