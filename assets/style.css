@@ -9,7 +9,10 @@ body {
 }
 #info {
   padding: 1em;
+  min-width: 20em;
   max-width: 20%;
+  text-align: justify;
+  overflow-y: auto;
 }
 #map {
   flex-grow: 1;
@@ -23,4 +26,24 @@ table tr:nth-child(odd) {
 }
 .block {
   width: 1em;
+}
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+a.button {
+  color: white;
+  background-color: #008f00;
+  border: 2px solid green;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+a.button:hover {
+  background-color: green;
+}
+h3, h4, a.button {
+  font-family: sans-serif;
 }
