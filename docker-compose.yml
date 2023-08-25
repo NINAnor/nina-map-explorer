@@ -1,0 +1,7 @@
+services:
+  nginx:
+    build: .
+    volumes:
+      - ./datasets:/var/www/datasets:ro
+    ports:
+      - 8000:80

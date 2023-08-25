@@ -1,5 +1,6 @@
 FROM nginx
 
-COPY index.html /usr/share/nginx/html/
-COPY assets/map.js assets/style.css /usr/share/nginx/html/assets/
+COPY nginx/default.conf.template /etc/nginx/templates/
+COPY viewer.html /var/www/
+COPY assets/map.js assets/style.css /var/www/assets/
 

@@ -27,7 +27,7 @@ Full documentation is available at [gdal.org/drivers/vector/pmtiles.html](https:
 The only requirement is having a web server which supports HTTP bytes serving/ranged requests, such as NGINX.
 
 ```bash
-docker run --rm -p 8000:80 -v $PWD:/usr/share/nginx/html:ro nginx
+docker compose up --build
 ```
 
 Then, the application can be seen by visiting [http://localhost:8000/#example](http://localhost:8000/#example). The text after the hash symbol specifies which dataset should be loaded, which match the name of the folder.

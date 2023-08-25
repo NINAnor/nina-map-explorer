@@ -1,0 +1,21 @@
+server {
+    listen       80;
+    server_name  localhost;
+    root   /var/www;
+    absolute_redirect off;
+    autoindex on;
+
+    location = / {
+        return 307 /datasets/;
+    }
+
+    location ~* ^/datasets/(.+)/$ {
+        return 307 /viewer.html#$1;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}
+
