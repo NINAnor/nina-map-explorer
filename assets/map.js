@@ -33,7 +33,7 @@ const map = new maplibregl.Map({
 });
 map.addControl(
   new MaplibreGeocoder(geocoderApi, {
-    mapboxgl: maplibregl,
+    "maplibregl": maplibregl,
     "placeholder": "Søk",
   }),
   "top-left",
