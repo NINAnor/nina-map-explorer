@@ -47,3 +47,7 @@ a.button:hover {
 h3, h4, a.button {
   font-family: sans-serif;
 }
+/* https://github.com/watergis/maplibre-gl-legend/issues/22 */
+.maplibregl-legend-close-button {
+  display: none !important;
+}
