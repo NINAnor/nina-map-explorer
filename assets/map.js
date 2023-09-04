@@ -41,6 +41,21 @@ map.addControl(
 
 map.addControl(new maplibregl.NavigationControl());
 
+function popup(e) {
+  let properties = e.features[0].properties;
+  let html =
+    "<table>" +
+    Object.keys(properties)
+      .map((key) => `<tr><td>${key}</td><td>${properties[key]}</td></tr>`)
+      .reduce((a, b) => a + b) +
+    "</table>";
+  new maplibregl.Popup().setLngLat(e.lngLat).setHTML(html).addTo(map);
+}
+
+function setCursorStyle(style) {
+  map.getCanvas().style.cursor = style;
+}
+
 map.on("style.load", () => {
   let name = map.getStyle().name;
   document.title = name;
@@ -60,23 +75,12 @@ map.on("style.load", () => {
     }),
     "bottom-left",
   );
-});
-
-map.on("click", "data-layer", (e) => {
-  let properties = e.features[0].properties;
-  let html =
-    "<table>" +
-    Object.keys(properties)
-      .map((key) => `<tr><td>${key}</td><td>${properties[key]}</td></tr>`)
-      .reduce((a, b) => a + b) +
-    "</table>";
-  new maplibregl.Popup().setLngLat(e.lngLat).setHTML(html).addTo(map);
-});
-map.on("mouseenter", "data-layer", () => {
-  map.getCanvas().style.cursor = "pointer";
-});
-map.on("mouseleave", "data-layer", () => {
-  map.getCanvas().style.cursor = "";
+  for (const layer of layers) {
+    console.log(layer.id);
+    map.on("click", layer.id, popup);
+    map.on("mouseenter", layer.id, () => setCursorStyle("pointer"));
+    map.on("mouseleave", layer.id, () => setCursorStyle(""));
+  }
 });
 
 let dataset = location.hash.slice(1);
