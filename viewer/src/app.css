@@ -1,0 +1,18 @@
+@import 'maplibre-gl/dist/maplibre-gl.css';
+@import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css';
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.map {
+    height: 100vh;
+    z-index: 0;
+}
+
+.map-wrap {
+    flex-grow: 1;
+}

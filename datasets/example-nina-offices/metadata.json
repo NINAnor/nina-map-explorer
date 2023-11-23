@@ -1,6 +1,33 @@
 {
-  "style": "style.json",
-  "source": "nina.geojson",
+  "style": "/datasets/example-nina-offices/style.json",
+  "source": "/datasets/example-nina-offices/data.geojson",
   "subtitle": "NINA offices across Norway",
-  "description": "<p>NINA offices across Norway. This is a test dataset.</p>"
+  "description": "<p>NINA offices across Norway. This is a test dataset.</p>",
+  "layers": [
+    {
+      "type": "group",
+      "id": "id1",
+      "name": "Test",
+      "download": "/datasets/example-nina-offices/data.geojson",
+      "children": [
+        {
+          "id": "id2",
+          "name": "Foo",
+          "children": [
+            {
+              "type": "layer",
+              "id": "osm",
+              "name": "osm"
+            }
+          ]
+        },
+        {
+          "type": "layer",
+          "name": "data",
+          "id": "data-layer",
+          "download": "/datasets/example-nina-offices/data.geojson"
+        }
+      ]
+    }
+  ]
 }
