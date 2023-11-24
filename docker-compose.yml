@@ -19,14 +19,11 @@ services:
     volumes:
       - ./datasets:/var/www/datasets:ro
       - ./nginx/dev.conf.template:/etc/nginx/templates/default.conf.template:ro
-      - ./viewer.html:/var/www/viewer.html:ro
-      - ./assets:/var/www/assets/:ro
   vite:
     build:
-      context: ./viewer
-      dockerfile: Dockerfile
+      target: frontend
     volumes:
-      - ./viewer/src:/app/src
+      - ./src:/app/src
     ports:
       - "3000:3000"
     profiles:
