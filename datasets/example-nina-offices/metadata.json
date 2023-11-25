@@ -25,6 +25,11 @@
           "name": "data",
           "id": "data-layer",
           "download": "/datasets/example-nina-offices/data.geojson"
+        },
+        {
+          "type": "layer",
+          "name": "raster",
+          "id": "raster"
         }
       ]
     }
