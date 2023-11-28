@@ -30,6 +30,7 @@ export default function MapContextProvider({ children }) {
   const map = React.useRef(null);
   const [ready, setReady] = React.useState(false);
   const [layers, setLayers] = React.useState({});
+  const [style, setStyle] = React.useState(null);
 
   const setMap = (m) => {
     map.current = m
@@ -43,11 +44,13 @@ export default function MapContextProvider({ children }) {
         ...p,
         [c]: getLayer(c, style),
       }), {}));
+      setStyle(style);
     }
 
     function loadStyle() {
       const style = map.current.getStyle();
       document.title = style.name;
+      setStyle(style);
 
       for (const layer of style.layers) {
         map.current.on("click", layer.id, (e) => popup(e).addTo(map.current));
@@ -71,6 +74,7 @@ export default function MapContextProvider({ children }) {
     setMap,
     ready,
     layers,
+    style,
   }
 
   return (
