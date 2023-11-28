@@ -8,6 +8,8 @@ server {
     location = / {
         return 307 /datasets/;
     }
+    location = /datasets/ {
+    }
 
     location ~* ^/datasets/(.+)/$ {
         return 307 /viewer.html#$1;
