@@ -26,8 +26,18 @@ Full documentation is available at [gdal.org/drivers/vector/pmtiles.html](https:
 
 The only requirement is having a web server which supports HTTP bytes serving/ranged requests, such as NGINX.
 
+### Development
+
 ```bash
-docker compose up --profile prod --build
+docker compose --profile dev up --build
 ```
 
 Then, the application can be seen by visiting [http://localhost:8000/](http://localhost:8000/).
+
+### Production
+
+Same as development, but using the `prod` profile:
+
+```bash
+docker compose --profile prod up
+```
