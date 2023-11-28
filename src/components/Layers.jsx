@@ -62,7 +62,7 @@ export default function Layers() {
 
   return (
     <div style={{ marginLeft: '0.5rem' }}>
-      <h5>Layers</h5>
+      <h5>Kartlag</h5>
       <Tree
         initialData={data.layers}
         disableEdit

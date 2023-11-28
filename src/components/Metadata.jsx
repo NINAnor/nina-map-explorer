@@ -16,7 +16,7 @@ export default function Metadata() {
     <div style={{ marginLeft: '0.5rem' }}>
       <h3>{style ? style.name : ''}</h3>
       <p>{data.subtitle}</p>
-      <div onClick={() => setOpen(!open)}><i className={`fas fa-caret-${open ? 'down' : 'right'}`}></i> Description</div>
+      <div onClick={() => setOpen(!open)}><i className={`fas fa-caret-${open ? 'down' : 'right'}`}></i> Beskrivelse</div>
       {open ? <div style={{ marginLeft: '0.5rem'}} dangerouslySetInnerHTML={{ __html: data.description }} /> : null}
     </div>
   )
