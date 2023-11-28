@@ -25,3 +25,11 @@ body {
     overflow-y: auto;
     padding: 1rem;
 }
+
+.maplibregl-popup {
+  max-width: 100% !important;
+  line-height: 1em;
+}
+table tr:nth-child(odd) {
+  background-color: aliceblue;
+}
