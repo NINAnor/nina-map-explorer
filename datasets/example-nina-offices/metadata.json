@@ -1,6 +1,5 @@
 {
   "style": "/datasets/example-nina-offices/style.json",
-  "source": "/datasets/example-nina-offices/data.geojson",
   "subtitle": "NINA offices across Norway",
   "description": "<p>NINA offices across Norway. This is a test dataset.</p>",
   "layers": [
