@@ -7,8 +7,8 @@ export default function App() {
 
   return (
     <MapContextProvider>
-      <div style={{ display: 'flex' }}>
-        <div style={{ width: '350px' }}>
+      <div id="app-wrap" style={{ display: 'flex' }}>
+        <div id="sidebar">
           <Metadata />
           <Layers />
         </div>
