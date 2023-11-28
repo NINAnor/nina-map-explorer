@@ -1,0 +1,39 @@
+server {
+    listen       80;
+    server_name  localhost;
+    root   /var/www;
+    absolute_redirect off;
+    autoindex on;
+
+    location = / {
+        return 307 /datasets/;
+    }
+    location = /datasets/ {
+    }
+
+    location ~* ^/datasets/(.+)/$ {
+        return 307 /viewer.html#$1;
+    }
+
+    location ~* ^/datasets/(.+)/(.+)$ {
+        try_files $uri $uri/;
+    }
+
+    location = /viewer.html {
+        proxy_pass http://vite:3000/index.html;
+    }
+
+    location / {
+        proxy_pass http://vite:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}
+

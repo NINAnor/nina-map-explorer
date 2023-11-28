@@ -18,6 +18,13 @@ services:
     image: nginx
     volumes:
       - ./datasets:/var/www/datasets:ro
-      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
-      - ./viewer.html:/var/www/viewer.html:ro
-      - ./assets:/var/www/assets/:ro
+      - ./nginx/dev.conf.template:/etc/nginx/templates/default.conf.template:ro
+  vite:
+    build:
+      target: frontend
+    volumes:
+      - ./src:/app/src
+    ports:
+      - "3000:3000"
+    profiles:
+      - dev

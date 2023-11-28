@@ -1,6 +1,18 @@
+FROM node:18 as frontend
+WORKDIR /app
+COPY package.json package-lock.json .
+RUN npm i
+COPY src src/
+COPY public public/
+COPY vite.config.js index.html .
+
+CMD ["npm", "run", "dev"]
+
+FROM frontend as build
+RUN npm run build
+
 FROM nginx
 
 COPY nginx/default.conf.template /etc/nginx/templates/
-COPY viewer.html /var/www/
-COPY assets/map.js assets/style.css /var/www/assets/
-
+COPY --from=build /app/dist /var/www/
+RUN mv /var/www/index.html /var/www/viewer.html
