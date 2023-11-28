@@ -1,7 +1,8 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import useMetadata from "../hooks/useMetadata";
 import { Tree } from 'react-arborist';
 import MapContext from "../contexts/map";
+import LegendSymbol from "./LegendSymbol";
 
 function Layer({ node, style, dragHandle }) {
   const { map, layers } = useContext(MapContext);
@@ -13,10 +14,18 @@ function Layer({ node, style, dragHandle }) {
     map.setLayoutProperty(node.data.id, 'visibility', layer.isVisible ? 'none' : 'visible');
   }
 
+  const legend = useMemo(() => {
+    return layer ? LegendSymbol(layer, map) : null;
+  })
+
   return (
     <div style={style} ref={dragHandle}>
       <div style={{ display: 'flex' }}>
-        <div onClick={updateVisibility} style={{ flexGrow: 1 }}><i className={icon}></i> {node.data.name}</div>
+        <div onClick={updateVisibility} style={{ flexGrow: 1, display: 'flex' }}>
+          <i className={icon}></i>
+          <div style={{ width: '17px', margin: '0 0.5rem' }}>{legend}</div>
+          <div>{node.data.name}</div>
+        </div>
         {node.data.download && (<div><a href={node.data.download} download><i className="fas fa-download"></i></a></div>)}
       </div>
     </div>
