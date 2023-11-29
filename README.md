@@ -22,6 +22,15 @@ docker run --rm -ti -v $PWD:/host --workdir /host ghcr.io/osgeo/gdal \
 
 Full documentation is available at [gdal.org/drivers/vector/pmtiles.html](https://gdal.org/drivers/vector/pmtiles.html).
 
+
+## COG conversion
+Raster images should be converted a 4 bands RGBA GEOTiff using EPSG:3857.
+
+If you have a single-band greyscale GEOTiff you can use `generate_cog.sh` to produce a valid Cloud Optimized GEOTiff.
+
+**NOTE**: COG layers are static, style must be pre-applyied.
+
+
 ## Running the webapp
 
 The only requirement is having a web server which supports HTTP bytes serving/ranged requests, such as NGINX.
