@@ -75,7 +75,7 @@ class COG {
     this.bbox = await getBboxInWebMercator(image);
     this.bandsCount = image.getSamplesPerPixel();
     if (this.bandsCount !== 4) {
-      throw Error(`GEOTiff has only a single band, only 4 bands (RGBA) GEOTiffs are supported`);
+      throw Error(`Only 4 bands (RGBA) GEOTiffs are supported`);
     }
     return this;
   }
