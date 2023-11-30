@@ -108,11 +108,22 @@ export default class COGProtocol {
           bounds: instance.bbox,
         };
         callback(null, tilejson, null, null);
+      }).catch(e => {
+        callback(e, null, null, null);
       })
+
+      return { cancel: () => {} };
     } else {
       // if it is an image, perform the actual fetch of the image portion
       let [httpUrl, bbox] = toUrlAndBBox(params.url);
       let instance = this.tiles.get(httpUrl);
+
+      const controller = new AbortController();
+      const signal = controller.signal;
+      let cancel = () => {
+        controller.abort();
+      };
+
       instance.tiff.readRasters({
         bbox,
         // bands: []
@@ -121,6 +132,7 @@ export default class COGProtocol {
         interleave: true,
         fillValue: NaN,
         pool: this.pool,
+        signal,
       }).then((data) => {
         const png = encode({
           data: new Uint8ClampedArray(data, 
@@ -132,7 +144,13 @@ export default class COGProtocol {
           channels: 4,
         });
         callback(null, png, null, null);
+      }).catch(e => {
+        if (e.name !== "AbortError") {
+          callback(e, null, null, null);
+        }
       });
+
+      return { cancel };
     }
     return { cancel: () => { } };
   }
