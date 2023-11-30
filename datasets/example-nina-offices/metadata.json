@@ -28,7 +28,8 @@
         },
         {
           "type": "layer",
-          "name": "raster",
+          "name": "S2 landcover",
+          "download": "/datasets/example-nina-offices/s2_land_cover.tif",
           "id": "raster"
         }
       ]
