@@ -20,7 +20,7 @@
     },
     "raster-test": {
       "type": "raster",
-      "url": "cog://localhost:8000/datasets/example-nina-offices/s2_land_cover.cog.tif"
+      "url": "cog://http://localhost:8000/datasets/example-nina-offices/s2_land_cover.cog.tif"
     }
   },
   "layers": [
