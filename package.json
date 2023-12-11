@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@maplibre/maplibre-gl-geocoder": "1.5.0",
+    "@ninanor/maplibre-gl-cog": "^0.0.2",
     "@watergis/legend-symbol": "^0.2.3",
     "events": "^3.3.0",
     "fast-png": "^6.2.0",

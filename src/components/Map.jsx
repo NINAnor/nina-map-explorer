@@ -3,17 +3,16 @@ import maplibregl from 'maplibre-gl';
 import MaplibreGeocoder from '@maplibre/maplibre-gl-geocoder';
 
 import * as pmtiles from 'pmtiles';
+import { ProtocolV3 } from '@ninanor/maplibre-gl-cog';
 
 import MapContext from '../contexts/map';
 import useMetadata from '../hooks/useMetadata';
-import COGProtocol from '../libs/cog';
 
 
 let protocol = new pmtiles.Protocol();
-let cogProtocol = new COGProtocol()
+let cogProtocol = new ProtocolV3()
 maplibregl.addProtocol('pmtiles', protocol.tile);
 maplibregl.addProtocol('cog', cogProtocol.tile);
-maplibregl.addProtocol('cogs', cogProtocol.tile);
 
 const geocoderApi = {
     forwardGeocode: async (config) => {
