@@ -12,8 +12,8 @@ export default function Metadata() {
   }
 
   return (
-    <div style={{ marginLeft: '0.5rem' }}>
-      <h3>{style ? style.name : ''}</h3>
+    <div>
+      <h3 style={{ marginTop: '0'}}>{style ? style.name : ''}</h3>
       <p>{data.subtitle}</p>
       <details>
         <summary>Beskrivelse</summary>

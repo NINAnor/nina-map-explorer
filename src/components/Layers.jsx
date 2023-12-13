@@ -36,7 +36,7 @@ function Group({ node, style, dragHandle }) {
   return (
     <div style={style} ref={dragHandle}>
       <div style={{ display: 'flex' }}>
-        <div onClick={() => node.toggle()} style={{ flexGrow: 1 }}><i className="fas fa-folder"></i> {node.data.name}</div>
+        <div onClick={() => node.toggle()} style={{ flexGrow: 1 }}><i className={`fas fa-folder${node.isOpen ? '-open' : '' }`}></i> {node.data.name}</div>
         {node.data.download && (<div><a href={node.data.download} download><i className="fas fa-download"></i></a></div>)}
       </div>
     </div>
@@ -61,7 +61,7 @@ export default function Layers() {
   }
 
   return (
-    <div style={{ marginLeft: '0.5rem' }}>
+    <div>
       <h5>Kartlag</h5>
       <Tree
         initialData={data.layers}
@@ -70,6 +70,11 @@ export default function Layers() {
         disableDrop
         disableMultiSelection
         openByDefault
+        width={400}
+        height={window.innerHeight * 0.7}
+        indent={10}
+        rowHeight={30}
+        overscanCount={1}
       >
         {Child}
       </Tree>
