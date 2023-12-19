@@ -1,7 +1,7 @@
 x-common-nginx:
   &common-nginx
   ports:
-    - 8000:80
+    - 8001:80
 
 services:
   nginx:
@@ -25,6 +25,7 @@ services:
       target: frontend
     volumes:
       - ./src:/app/src
+      - ./public:/app/public
     ports:
       - "3000:3000"
     profiles:
