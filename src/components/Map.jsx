@@ -75,7 +75,7 @@ export default function Map() {
     return (
       <div>
         <h2>An error occurred</h2>
-        <p>{error.info.message}</p>
+        <p>{error.info ? error.info.message : error.message}</p>
       </div>
     )
   }
