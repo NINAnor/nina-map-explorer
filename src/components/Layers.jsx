@@ -54,9 +54,9 @@ function Child({ node, ...other }) {
 
 
 export default function Layers() {
-  const { data, isLoading } = useMetadata();
+  const { data, isLoading, error } = useMetadata();
 
-  if (isLoading) {
+  if (isLoading || error) {
     return null;
   }
 

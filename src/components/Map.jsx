@@ -47,7 +47,7 @@ const geocoderApi = {
 export default function Map() {
   const mapContainer = useRef(null);
   const { map, setMap } = useContext(MapContext);
-  const { data } = useMetadata();
+  const { data, error } = useMetadata();
 
   useEffect(() => {
     if (data && !map) {
@@ -70,6 +70,15 @@ export default function Map() {
 
     }
   }, [data, map]);
+
+  if (error) {
+    return (
+      <div>
+        <h2>An error occurred</h2>
+        <p>{error.info.message}</p>
+      </div>
+    )
+  }
 
   return (
     <div className="map-wrap">
