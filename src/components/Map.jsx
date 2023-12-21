@@ -14,6 +14,9 @@ let cogProtocol = new ProtocolV3()
 maplibregl.addProtocol('pmtiles', protocol.tile);
 maplibregl.addProtocol('cog', cogProtocol.tile);
 
+
+const transformRequest = window.TRANSFORM_REQUEST || (() => null)
+
 const geocoderApi = {
     forwardGeocode: async (config) => {
       const features = [];
@@ -51,6 +54,7 @@ export default function Map() {
         let m = new maplibregl.Map({
             container: mapContainer.current,
             style: data.style,
+            transformRequest,
         });
 
         setMap(m);
