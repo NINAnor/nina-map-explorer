@@ -1,19 +1,16 @@
-import Layers from "./components/Layers";
-import Map from "./components/Map";
-import MapContextProvider from "./components/MapContextProvider";
-import Metadata from "./components/Metadata";
+import {
+  RouterProvider,
+} from "@tanstack/react-router";
+import { QueryClientProvider } from "@tanstack/react-query";
+
+import router from "./router";
+import queryClient from "./queryClient";
+
 
 export default function App() {
-
   return (
-    <MapContextProvider>
-      <div id="app-wrap" style={{ display: 'flex' }}>
-        <div id="sidebar">
-          <Metadata />
-          <Layers />
-        </div>
-        <Map />
-      </div>
-    </MapContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   );
 }
