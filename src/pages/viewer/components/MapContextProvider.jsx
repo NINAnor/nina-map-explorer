@@ -1,5 +1,5 @@
 import React from "react";
-import MapContext from "../contexts/map";
+import MapContext from "../map";
 import find from 'lodash/find';
 import maplibregl from 'maplibre-gl';
 

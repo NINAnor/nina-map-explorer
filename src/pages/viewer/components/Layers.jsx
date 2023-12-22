@@ -1,7 +1,7 @@
 import { useContext, useMemo } from "react";
-import useMetadata from "../hooks/useMetadata";
+import useMetadata from "../../../hooks/useMetadata";
 import { Tree } from 'react-arborist';
-import MapContext from "../contexts/map";
+import MapContext from "../map";
 import LegendSymbol from "./LegendSymbol";
 
 function Layer({ node, style, dragHandle }) {
@@ -53,18 +53,12 @@ function Child({ node, ...other }) {
 }
 
 
-export default function Layers() {
-  const { data, isLoading, error } = useMetadata();
-
-  if (isLoading || error) {
-    return null;
-  }
-
+export default function Layers({ layers = [] }) {
   return (
     <div>
       <h5>Kartlag</h5>
       <Tree
-        initialData={data.layers}
+        initialData={layers}
         disableEdit
         disableDrag
         disableDrop
