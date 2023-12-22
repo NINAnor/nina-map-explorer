@@ -10,22 +10,14 @@ services:
       - prod
     image: ghcr.io/ninanor/nina-map-explorer:main
     build: .
-    volumes:
-      - ./datasets:/var/www/datasets:ro
-  nginx-dev:
-    <<: *common-nginx
-    profiles:
-      - dev
-    image: nginx
-    volumes:
-      - ./datasets:/var/www/datasets:ro
-      - ./nginx/dev.conf.template:/etc/nginx/templates/default.conf.template:ro
+
   vite:
     build:
       target: frontend
     volumes:
       - ./src:/app/src
-      - ./public:/app/public
+      # - ./public:/app/public
+      - ./config.js:/app/public/config.js
     ports:
       - "3000:3000"
     profiles:

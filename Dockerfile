@@ -15,4 +15,3 @@ FROM nginx
 
 COPY nginx/default.conf.template /etc/nginx/templates/
 COPY --from=build /app/dist /var/www/
-RUN mv /var/www/index.html /var/www/viewer.html
