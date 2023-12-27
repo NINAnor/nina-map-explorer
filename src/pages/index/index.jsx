@@ -13,7 +13,7 @@ export function IndexPage() {
   })
 
   return (
-    <div>
+    <div className="wrapper">
       <h1>NINA Maps</h1>
       <h3>Published Maps</h3>
       <MapsList />
