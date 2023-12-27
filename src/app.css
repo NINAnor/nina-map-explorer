@@ -33,3 +33,7 @@ body {
 table tr:nth-child(odd) {
   background-color: aliceblue;
 }
+
+.wrapper {
+  padding: 0.5rem;
+}

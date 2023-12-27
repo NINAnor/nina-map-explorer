@@ -17,7 +17,13 @@ export function MapsList() {
 
   return (
     <ul>
-      {data.data.map(d => <li key={d.slug}><Link to={viewerRoute.to} params={{ mapSlug: d.slug }}>{d.title}</Link></li>)}
+      {data.data.map(d => (
+        <li key={d.slug}>
+          <Link to={viewerRoute.to} params={{ mapSlug: d.slug }}>
+            {d.title} {d.visibility === 'public' ? <i className="fas fa-globe"></i> : <i className="fas fa-lock"></i>}
+          </Link>
+        </li>
+      ))}
     </ul>
   );
-}
+} 
