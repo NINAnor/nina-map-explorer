@@ -1,16 +1,27 @@
 import { Route } from "@tanstack/react-router"
 import rootRoute from "../root"
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions } from "@tanstack/react-query";
 import { MapsList } from "./MapsList";
 import mapApi from "../../api";
 
-export function IndexPage() {
+const fetchPortal = async () => {
+  const map = await mapApi
+    .get(`portals/${window.PORTAL_KEY}/`)
 
-  const { isPending, error, data } = useQuery({
-    queryKey: ['portal'],
-    queryFn: () =>
-      mapApi.get(`portals/${window.PORTAL_KEY}/`),
-  })
+  if (!map) {
+    throw new NotFoundError(`Portal not found!`)
+  }
+
+  return map
+}
+
+const portalOptions = () => queryOptions({
+  queryKey: ['portals'],
+  queryFn: fetchPortal,
+})
+
+export function IndexPage() {
+  // const query = useSuspenseQuery(portalOptions())
 
   return (
     <div className="wrapper">
@@ -25,4 +36,6 @@ export const indexRoute = new Route({
   getParentRoute: () => rootRoute,
   component: IndexPage,
   path: '/',
+  loader: ({ context: { queryClient }}) => 
+    queryClient.ensureQueryData(portalOptions())
 })

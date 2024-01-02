@@ -5,10 +5,8 @@ import Map from "./components/Map";
 import MapContextProvider from "./components/MapContextProvider";
 import Metadata from "./components/Metadata";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import axios from "axios";
 import mapApi from "../../api";
-
-class NotFoundError extends Error {}
+import { NotFoundError } from "../../lib/utils";
 
 const fetchMap = async (mapSlug) => {
   const map = await mapApi
@@ -58,7 +56,7 @@ export function Viewer() {
       <div id="app-wrap" style={{ display: 'flex' }}>
         <div id="sidebar">
           <Metadata {...map.data} />
-          <Layers data={map.data.layers} />
+          <Layers layers={map.data.layers} />
         </div>
         <Map {...map.data} />
       </div>
