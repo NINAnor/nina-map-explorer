@@ -23,7 +23,7 @@ body {
 #sidebar {
     width: 400px;
     overflow-y: auto;
-    padding: 0.5rem;
+    padding: 0 0.5rem;
 }
 
 .maplibregl-popup {
@@ -36,4 +36,19 @@ table tr:nth-child(odd) {
 
 .wrapper {
   padding: 0.5rem;
+}
+
+h5, h3 {
+  margin: 0;
+  padding: 1rem 0;
+}
+
+.metadata h3 {
+  padding: 0.2rem 0;
+}
+
+details summary + div {
+  margin-left: 0.5rem;
+  max-height: 200px;
+  overflow-y: scroll;
 }

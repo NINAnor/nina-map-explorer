@@ -1,5 +1,4 @@
-import { useContext, useMemo } from "react";
-import useMetadata from "../../../hooks/useMetadata";
+import { useContext, useMemo, useState } from "react";
 import { Tree } from 'react-arborist';
 import MapContext from "../map";
 import LegendSymbol from "./LegendSymbol";
@@ -52,11 +51,28 @@ function Child({ node, ...other }) {
   return <Component node={node} {...other} />
 }
 
+const options = {
+  box: "border-box"
+}
+
+const ROW_HEIGHT = 30;
+
+function useTreeVisibleNodesCount() {
+  const [count, setCount] = useState(0)
+  const ref = (api) => {
+    if (api) setCount(api.visibleNodes.length)
+  }
+  return { ref, count }
+}
 
 export default function Layers({ layers = [] }) {
+  const { count, ref } = useTreeVisibleNodesCount();
+
   return (
-    <div>
-      <h5>Kartlag</h5>
+    <div className="layers">
+      <div>
+        <h5>Kartlag</h5>
+      </div>
       <Tree
         initialData={layers}
         disableEdit
@@ -64,11 +80,11 @@ export default function Layers({ layers = [] }) {
         disableDrop
         disableMultiSelection
         openByDefault
-        width={400}
-        height={window.innerHeight * 0.7}
+        height={count * ROW_HEIGHT}
         indent={10}
-        rowHeight={30}
+        rowHeight={ROW_HEIGHT}
         overscanCount={1}
+        ref={ref}
       >
         {Child}
       </Tree>
