@@ -29,7 +29,7 @@ const mapQueryOptions = (mapSlug) =>
 
 export const viewerRoute = new Route({
   component: Viewer,
-  path: 'dataset/$mapSlug',
+  path: 'datasets/$mapSlug',
   getParentRoute: () => rootRoute,
   errorComponent: MapErrorComponent,
   loader: ({ context: { queryClient }, params: { mapSlug } }) =>
