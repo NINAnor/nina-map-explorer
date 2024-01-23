@@ -3,6 +3,9 @@ import rootRoute from "../root"
 import { queryOptions } from "@tanstack/react-query";
 import { MapsList } from "./MapsList";
 import mapApi from "../../api";
+import { Columns, Container, Heading, Hero, Navbar } from "react-bulma-components";
+
+import logo from '../../assets/logowhite.png';
 
 const fetchPortal = async () => {
   const map = await mapApi
@@ -24,11 +27,28 @@ export function IndexPage() {
   // const query = useSuspenseQuery(portalOptions())
 
   return (
-    <div className="wrapper">
-      <h1>NINA Maps</h1>
-      <h3>Published Maps</h3>
-      <MapsList />
-    </div>
+    <>
+      <Hero color="primary" gradient className="hero">
+        <Hero.Body>
+          <Container>
+            <Columns>
+              <Columns.Column narrow>
+                <img src={logo} className="logo"/>
+              </Columns.Column>
+              <Columns.Column>
+                <Heading>Maps</Heading>
+                <Heading size={3} subtitle>Official NINA Maps</Heading>
+              </Columns.Column>
+            </Columns>
+          </Container>
+        </Hero.Body>
+      </Hero>
+      <Container>
+        <div className="py-4">
+          <MapsList />
+        </div>
+      </Container>
+    </>
   );
 }
 
