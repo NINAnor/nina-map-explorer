@@ -28,7 +28,7 @@ export function IndexPage() {
 
   return (
     <>
-      <Hero color="primary" gradient className="hero">
+      <Hero color="primary" className="hero">
         <Hero.Body>
           <Container>
             <Columns>
@@ -36,7 +36,7 @@ export function IndexPage() {
                 <img src={logo} className="logo"/>
               </Columns.Column>
               <Columns.Column>
-                <Heading>Maps</Heading>
+                <Heading weight="bold">Maps</Heading>
                 <Heading size={3} subtitle>Official NINA Maps</Heading>
               </Columns.Column>
             </Columns>

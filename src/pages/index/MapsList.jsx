@@ -38,7 +38,7 @@ export function MapsList() {
               )}
               <Card.Footer>
                 <Card.Footer.Item>
-                  <Link to={viewerRoute.to} params={{ mapSlug: d.slug }} target="_blank" rel="noopener noreferrer">Explore</Link>
+                  <Link to={viewerRoute.to} params={{ mapSlug: d.slug }} target="_blank" rel="noopener noreferrer">EXPLORE</Link>
                 </Card.Footer.Item>
               </Card.Footer>
             </Card>             

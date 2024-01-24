@@ -1,9 +1,12 @@
 // definition
-$nina-primary: #2DCCD3;
-$nina-secondary: #FFB25B;
+$nina-primary: #425563;
+$nina-secondary: #008C95;
+
+$nina-accent: #E57200;
 
 // override
 $primary: $nina-primary;
+$link: $nina-secondary;
 $family-primary: "Open Sans", Helvetica, Arial;
 $family-secondary: "Open Sans", Helvetica, Arial;
 
