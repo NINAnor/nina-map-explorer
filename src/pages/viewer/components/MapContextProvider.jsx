@@ -14,11 +14,11 @@ function getLayer(layerId, style) {
 function popup(e) {
   let properties = e.features[0].properties;
   let html =
-    "<table>" +
+    "<table class='table is-bordered is-striped is-narrow is-hoverable is-fullwidth'><tbody>" +
     Object.keys(properties)
-      .map((key) => `<tr><td>${key}</td><td>${properties[key]}</td></tr>`)
+      .map((key) => `<tr><td><b>${key}</b></td><td>${properties[key]}</td></tr>`)
       .reduce((a, b) => a + b) +
-    "</table>";
+    "</tbody></table>";
   return new maplibregl.Popup().setLngLat(e.lngLat).setHTML(html);
 }
 

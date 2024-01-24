@@ -70,9 +70,6 @@ export default function Layers({ layers = [] }) {
 
   return (
     <div className="layers">
-      <div>
-        <h5>Kartlag</h5>
-      </div>
       <Tree
         initialData={layers}
         disableEdit
