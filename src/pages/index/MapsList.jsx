@@ -17,10 +17,10 @@ export function MapsList() {
   }
 
   return (
-    <Columns>
+    <Columns multiline>
       {data.data.map(d => (
-        <Columns.Column key={d.slug}>
-            <Card>
+        <Columns.Column key={d.slug} mobile={{ size: 12 }} tablet={{ size: 'half'}} desktop={{ size: 4 }} widescreen={{ size: 3 }}>
+            <Card px={2}>
               <Card.Header>
                 <Card.Header.Title>{d.title}</Card.Header.Title>
                 <Card.Header.Icon>{d.visibility === 'public' ? <i className="fas fa-globe"></i> : <i className="fas fa-lock"></i>}</Card.Header.Icon>
