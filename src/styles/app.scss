@@ -28,6 +28,10 @@ body {
     .logo {
         max-height: 5rem;
     }
+
+    .title:not(.is-spaced) + .subtitle {
+        margin-top: -0.9rem;
+    }
 }
 
 

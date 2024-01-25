@@ -3,7 +3,7 @@ import rootRoute from "../root"
 import { queryOptions } from "@tanstack/react-query";
 import { MapsList } from "./MapsList";
 import mapApi from "../../api";
-import { Columns, Container, Heading, Hero, Navbar } from "react-bulma-components";
+import { Columns, Container, Heading, Hero, Image, Media } from "react-bulma-components";
 
 import logo from '../../assets/logowhite.png';
 
@@ -31,15 +31,18 @@ export function IndexPage() {
       <Hero color="primary" className="hero">
         <Hero.Body>
           <Container>
-            <Columns>
-              <Columns.Column narrow>
-                <img src={logo} className="logo"/>
-              </Columns.Column>
-              <Columns.Column>
+            <Media className="">
+              <Media.Item align="left">
+                <img
+                  src={logo}
+                  className="logo"
+                />
+              </Media.Item>
+              <Media.Item align="center">
                 <Heading weight="bold">Maps</Heading>
-                <Heading size={3} subtitle>Official NINA Maps</Heading>
-              </Columns.Column>
-            </Columns>
+                <Heading renderAs="h3" size={3} subtitle>Official NINA Maps</Heading>
+              </Media.Item>
+            </Media>
           </Container>
         </Hero.Body>
       </Hero>
