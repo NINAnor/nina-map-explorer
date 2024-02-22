@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { ModalContext } from "../contexts";
-import { Modal } from "react-bulma-components";
+import { Content, Modal } from "react-bulma-components";
 import parse from 'html-react-parser';
 
 
@@ -20,7 +20,9 @@ export default function  ModalContextProvider({ children }) {
             <Modal.Card.Title>{node && node.name}</Modal.Card.Title>
           </Modal.Card.Header>
           <Modal.Card.Body>
-            {node && parse(node.description)}
+            <Content>
+              {node && parse(node.description)}
+            </Content>
           </Modal.Card.Body>
         </Modal.Card>
       </Modal>

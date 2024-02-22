@@ -60,9 +60,7 @@ const TABS = {
     label: 'Beskrivelse',
     render: (map) => (
     <Content px={2}>
-      <div>
-        {parse(map.data.description)}
-      </div>
+      {parse(map.data.description)}
     </Content>
     )
   }
