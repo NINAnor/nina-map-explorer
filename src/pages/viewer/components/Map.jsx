@@ -5,7 +5,7 @@ import MaplibreGeocoder from '@maplibre/maplibre-gl-geocoder';
 import * as pmtiles from 'pmtiles';
 import { ProtocolV3 } from '@ninanor/maplibre-gl-cog';
 
-import MapContext from '../map';
+import { MapContext } from '../contexts';
 
 let protocol = new pmtiles.Protocol();
 let cogProtocol = new ProtocolV3()

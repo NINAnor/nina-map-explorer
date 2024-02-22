@@ -1,4 +1,5 @@
 import { ErrorComponent, Route } from "@tanstack/react-router";
+import parse from 'html-react-parser';
 import rootRoute from "../root";
 import Layers from "./components/Layers";
 import Map from "./components/Map";
@@ -10,6 +11,7 @@ import { NotFoundError } from "../../lib/utils";
 import { Content, Tabs } from "react-bulma-components";
 import { useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
+import ModalContextProvider from "./components/ModalContextProvider";
 
 const fetchMap = async (mapSlug) => {
   const map = await mapApi
@@ -58,7 +60,9 @@ const TABS = {
     label: 'Beskrivelse',
     render: (map) => (
     <Content px={2}>
-      <div dangerouslySetInnerHTML={{ __html: map.data.description }} />
+      <div>
+        {parse(map.data.description)}
+      </div>
     </Content>
     )
   }
@@ -90,16 +94,18 @@ export function Viewer() {
 
   return (
     <MapContextProvider>
-      <Helmet 
-        title={map.data.title}
-      />
-      <div id="app-wrap" style={{ display: 'flex' }}>
-        <div id="sidebar">
-          <Metadata {...map.data} />
-          <TabNav map={map} />
+      <ModalContextProvider>
+        <Helmet 
+          title={map.data.title}
+        />
+        <div id="app-wrap" style={{ display: 'flex' }}>
+          <div id="sidebar">
+            <Metadata {...map.data} />
+            <TabNav map={map} />
+          </div>
+          <Map {...map.data} />
         </div>
-        <Map {...map.data} />
-      </div>
+      </ModalContextProvider>
     </MapContextProvider>
   );
 }

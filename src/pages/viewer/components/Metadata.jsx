@@ -1,13 +1,13 @@
 import { Content, Heading, Image, Media, Panel } from "react-bulma-components";
-import logo from '../../../assets/logosmall.png';
+import logoFallback from '../../../assets/logosmall.png';
 
-export default function Metadata({ title, subtitle, description, metadataRef }) {
+export default function Metadata({ title, subtitle, logo, metadataRef }) {
   return (
     <div ref={metadataRef} className="metadata">
       <Media className="pt-5">
         <Media.Item align="left">
           <Image
-            src={logo}
+            src={logo || logoFallback}
             size={64}
           />
         </Media.Item>

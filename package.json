@@ -21,6 +21,7 @@
     "events": "^3.3.0",
     "fast-png": "^6.2.0",
     "geotiff": "^2.1.0",
+    "html-react-parser": "^5.1.7",
     "lodash": "^4.17.21",
     "maplibre-gl": "^3.6.2",
     "plausible-tracker": "^0.3.8",
