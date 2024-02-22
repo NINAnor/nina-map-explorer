@@ -45,7 +45,7 @@ function Child({ node, dragHandle, style }) {
     <div style={style} ref={dragHandle}>
       <div style={{ display: 'flex' }}>
         <Component node={node} />
-        <div style={{ display: 'flex',  }}>
+        <div style={{ display: 'flex' }}>
           {node.data.description && (<Button size="small" text onClick={() => openNodeDescription(node.data)}><i className="fas fa-info"></i></Button>)}
           {node.data.link && (<Button size="small" renderAs="a" text href={node.data.link} target="_blank"><i className="fas fa-info"></i></Button>)}
           {node.data.download && (<Button size="small" text renderAs="a" href={node.data.download} download><i className="fas fa-download"></i></Button>)}
@@ -60,6 +60,7 @@ const options = {
 }
 
 const ROW_HEIGHT = 30;
+const SIDEBAR_WIDTH = 400 - 16; // 400 - 8px padding per side
 
 function useTreeVisibleNodesCount() {
   const [count, setCount] = useState(0)
@@ -84,6 +85,7 @@ export default function Layers({ layers = [] }) {
         height={count * ROW_HEIGHT}
         indent={10}
         rowHeight={ROW_HEIGHT}
+        width={SIDEBAR_WIDTH}
         overscanCount={1}
         ref={ref}
       >
