@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/react";
 if (window.SENTRY_DSN) {
     Sentry.init({
         dsn: window.SENTRY_DSN,
+        environment: window.SENTRY_ENV,
         integrations: [
             Sentry.browserTracingIntegration(),
             Sentry.replayIntegration({
