@@ -11,7 +11,9 @@ function Layer({ node }) {
   const icon = layer && layer.isVisible ? 'fas fa-eye' : 'fas fa-eye-slash';
 
   const updateVisibility = () => {
-    map.setLayoutProperty(node.data.id, 'visibility', layer.isVisible ? 'none' : 'visible');
+    if (layer) {
+      map.setLayoutProperty(node.data.id, 'visibility', layer.isVisible ? 'none' : 'visible');
+    }
   }
 
   const legend = useMemo(() => {
