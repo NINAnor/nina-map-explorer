@@ -12,6 +12,7 @@ import { Content, Tabs } from "react-bulma-components";
 import { useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
 import ModalContextProvider from "./components/ModalContextProvider";
+import Lazy from "./components/Lazy";
 
 const fetchMap = async (mapSlug) => {
   const map = await mapApi
@@ -102,6 +103,7 @@ export function Viewer() {
             <TabNav map={map} />
           </div>
           <Map {...map.data} />
+          <Lazy lazy={map.data.lazy} />
         </div>
       </ModalContextProvider>
     </MapContextProvider>
