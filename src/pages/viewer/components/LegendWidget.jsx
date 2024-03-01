@@ -15,7 +15,12 @@ export default function LegendWidget() {
     const { layers } = useContext(MapContext);
 
     const legend = useMemo(() => {
-        return Object.entries(layers).map(([key, value]) => {
+        return Object.entries(layers).filter(([key, value]) => {
+            if (value && value.layout && value.layout.visibility === 'none') {
+                return false;
+            }
+            return true;
+        }).map(([key, value]) => {
             if (!value.metadata.legend) {
                 return null;
             }
