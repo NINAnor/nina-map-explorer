@@ -19,11 +19,12 @@ export default function LegendWidget() {
             if (value && value.layout && value.layout.visibility === 'none') {
                 return false;
             }
+            if (!value.metadata || !value.metadata.legend) {
+                return false;
+            }
+
             return true;
         }).map(([key, value]) => {
-            if (!value.metadata.legend) {
-                return null;
-            }
             return (
                 <div key={key} className="mb-2">
                     <p className="is-size-6">{value.metadata.name}</p>
@@ -33,7 +34,7 @@ export default function LegendWidget() {
                 </div>
             )
 
-        }).filter(_ => _);
+        });
     }, [layers]);
 
     if (!legend || !legend.length) {
