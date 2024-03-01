@@ -6,6 +6,7 @@ import * as pmtiles from 'pmtiles';
 import { ProtocolV3 } from '@ninanor/maplibre-gl-cog';
 
 import { MapContext } from '../contexts';
+import LegendWidget from './LegendWidget';
 
 let protocol = new pmtiles.Protocol();
 let cogProtocol = new ProtocolV3()
@@ -78,6 +79,7 @@ export default function Map({ style }) {
   return (
     <div className="map-wrap">
       <div ref={mapContainer} className="map" />
+      <LegendWidget />
     </div>
   );
 }

@@ -74,3 +74,36 @@ body {
 .metadata h3 {
   padding: 0.2rem 0;
 }
+
+#legend-box {
+    width: 200px;
+    position: absolute;
+    bottom: 25px;
+    right: 0;
+
+    .title {
+        padding-bottom: 0.2rem;
+        margin-bottom: 0;
+    }
+
+    .sequential-legend-vertical .descriptors {
+        padding: 0.2rem;
+
+        & > .column {
+            padding: 0.2rem;
+        }
+    }
+
+    .sequential-legend-horizontal {
+        .column {
+            padding: 0.1;
+        }
+        & .descriptors {
+            padding: 0.2rem;
+        }
+
+        & > .column {
+            padding: 0.2rem;
+        }
+    }
+}
