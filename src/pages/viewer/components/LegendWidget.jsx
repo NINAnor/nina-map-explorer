@@ -1,6 +1,6 @@
 import { useContext, useMemo } from "react"
 import { MapContext } from "../contexts"
-import { Box, Heading } from "react-bulma-components";
+import { Box } from "react-bulma-components";
 import SequentialLegend from "./legend-types/Sequential";
 
 
@@ -11,39 +11,56 @@ function LegendRender({ type, ...data }) {
     }
 }
 
-export default function LegendWidget() {
-    const { layers } = useContext(MapContext);
-
-    const legend = useMemo(() => {
-        return Object.entries(layers).filter(([key, value]) => {
-            if (value && value.layout && value.layout.visibility === 'none') {
-                return false;
-            }
-            if (!value.metadata || !value.metadata.legend) {
-                return false;
-            }
-
-            return true;
-        }).map(([key, value]) => {
-            return (
-                <div key={key} className="mb-2">
-                    <p className="is-size-6">{value.metadata.name}</p>
-                    <div className="py-1">
-                        <LegendRender {...value.metadata.legend} />
-                    </div>
+function getMapLegend(legends) {
+    return legends.map(legend => {
+        return (
+            <div key={legend.id || legend.title} className="mb-2">
+                <p className="is-size-6">{legend.title}</p>
+                <div className="py-1">
+                    <LegendRender {...legend} />
                 </div>
-            )
+            </div>
+        )
+    });
+}
 
-        });
-    }, [layers]);
+function getLayerLegend(layers) {
+    return Object.entries(layers).filter(([key, value]) => {
+        if (value && value.layout && value.layout.visibility === 'none') {
+            return false;
+        }
+        if (!value.metadata || !value.metadata.legend) {
+            return false;
+        }
 
-    if (!legend || !legend.length) {
+        return true;
+    }).map(([key, value]) => {
+        return (
+            <div key={key} className="mb-2">
+                <p className="is-size-6">{value.metadata.name}</p>
+                <div className="py-1">
+                    <LegendRender {...value.metadata.legend} />
+                </div>
+            </div>
+        )
+    });
+}
+
+export default function LegendWidget() {
+    const { layers, style } = useContext(MapContext);
+    const config = useMemo(() => style && style.metadata && style.metadata.legend, style.metadata.legend.config ? style.metadata.legend.config : {
+        layerLegend: true,
+    }, [style]);
+    const legend = useMemo(() => config.layerLegend ? getLayerLegend(layers) : null, [layers, config]);
+    const mapLegend = useMemo(() => style && style.metadata && style.metadata.legend && style.metadata.legend.data ? getMapLegend(style.metadata.legend.data) : null, [style]);
+
+    if ((!legend || !legend.length) && (!mapLegend || !mapLegend.length)) {
         return null;
     }
 
     return (
         <Box id="legend-box">
-            <Heading renderAs="h6" size={5} weight="bold">Legend</Heading>
+            {mapLegend}
             {legend}
         </Box>
     )
