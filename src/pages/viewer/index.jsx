@@ -13,15 +13,11 @@ import { useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
 import ModalContextProvider from "./components/ModalContextProvider";
 import Lazy from "./components/Lazy";
+import ErrorWrapper from "../../components/ErrorWrapper";
 
 const fetchMap = async (mapSlug) => {
   const map = await mapApi
-    .get(`maps/${mapSlug}/metadata/`)
-
-  if (!map) {
-    throw new NotFoundError(`Map not found!`)
-  }
-
+    .get(`maps/${mapSlug}/metadata/`);
   return map
 }
 
@@ -42,10 +38,24 @@ export const viewerRoute = new Route({
     queryClient.ensureQueryData(mapQueryOptions(mapSlug)),
 })
 
-
 function MapErrorComponent({ error }) {
-  if (error instanceof NotFoundError) {
-    return <div>{error.message}</div>
+  if (error.response) {
+    if (error.response.status == 404) {
+      return <ErrorWrapper>The map does not exists</ErrorWrapper>
+    }
+    if (error.response.data) {
+      return <ErrorWrapper>{error.response.data}</ErrorWrapper>
+    }
+    // The request was made and the server responded with a status code
+    // that falls out of the range of 2xx
+    console.log(error.response.data);
+    console.log(error.response.status);
+    console.log(error.response.headers);
+  } else if (error.request) {
+    // The request was made but no response was received
+    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+    // http.ClientRequest in node.js
+    console.log(error.request);
   }
 
   return <ErrorComponent error={error} />
