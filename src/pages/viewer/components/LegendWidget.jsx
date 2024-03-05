@@ -46,9 +46,8 @@ function getLayerLegend(layers) {
     });
 }
 
-export default function LegendWidget() {
-    const { layers, style } = useContext(MapContext);
-    const config = useMemo(() => style && style.metadata && style.metadata.legend, style.metadata.legend.config ? style.metadata.legend.config : {
+function LegendWidget({ layers, style }) {
+    const config = useMemo(() => style && style.metadata && style.metadata.legend && style.metadata.legend.config ? style.metadata.legend.config : {
         layerLegend: true,
     }, [style]);
     const legend = useMemo(() => config.layerLegend ? getLayerLegend(layers) : null, [layers, config]);
@@ -64,4 +63,14 @@ export default function LegendWidget() {
             {legend}
         </Box>
     )
+}
+
+export default function LegendWidgetWrapper() {
+    const { layers, style } = useContext(MapContext);
+
+    if (!style) {
+        return null;
+    }
+
+    return <LegendWidget layers={layers} style={style} />
 }
