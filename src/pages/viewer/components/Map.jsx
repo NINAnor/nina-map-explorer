@@ -55,7 +55,7 @@ const geocoderApi = {
 
 export default function Map({ style = null }) {
   const mapContainer = useRef(null);
-  const { setMap } = useContext(MapContext);
+  const { setMap, map } = useContext(MapContext);
 
   useEffect(() => {
     if (style) {
@@ -64,6 +64,8 @@ export default function Map({ style = null }) {
         style,
         transformRequest,
       });
+
+      setMap(m);
 
       m.on('load', () => {
         const order = m.getLayersOrder();
@@ -78,7 +80,6 @@ export default function Map({ style = null }) {
         )
       });
 
-      setMap(m);
 
       m.addControl(new maplibregl.NavigationControl(), 'top-right');
       m.addControl(
@@ -94,8 +95,12 @@ export default function Map({ style = null }) {
   return (
     <div className="map-wrap">
       <div ref={mapContainer} className="map" />
-      <LegendWidget />
-      <BasemapWidget />
+      {map && (
+        <>
+          <LegendWidget />
+          <BasemapWidget />      
+        </>
+      )}
     </div>
   );
 }

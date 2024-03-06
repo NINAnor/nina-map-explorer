@@ -1,12 +1,11 @@
 import React from "react";
 import { MapContext } from "../contexts";
-import find from 'lodash/find';
 import maplibregl from 'maplibre-gl';
 
-function getLayer(layerId, style) {
-  const layer = find(style.layers, ({ id }) => id === layerId)
+function getLayer(layerId, map) {
+  const layer = map.getLayer(layerId);
   if (layer) {
-    layer.isVisible = layer.layout && layer.layout.visibility === 'none' ? false : true;
+    layer.isVisible = layer && layer.visibility === 'none' ? false : true;
   }
   return layer;
 }
@@ -32,6 +31,10 @@ export default function MapContextProvider({ children }) {
   const [layers, setLayers] = React.useState({});
   const [style, setStyle] = React.useState(null);
   const [lazy, setLazy] = React.useState({styles: {}, layers: {}});
+  const [basemaps, setBasemaps] = React.useState({
+    active: null,
+    others: [],
+  });
 
 
   const setMap = (m) => {
@@ -41,12 +44,26 @@ export default function MapContextProvider({ children }) {
 
   React.useEffect(() => {
     function listenStyle() {
-      const style = map.current.getStyle();
-      setLayers(map.current.getLayersOrder().reduce((p, c) => ({
-        ...p,
-        [c]: getLayer(c, style),
-      }), {}));
-      setStyle(style);
+      const layers = {};
+      let active = null;
+      const others = [];
+      for (const lid of map.current.getLayersOrder()) {
+        const layer = getLayer(lid, map.current)
+        layers[lid] = layer;
+        if (layer.metadata && layer.metadata.is_basemap) {
+          if (!active && layer.isVisible) {
+            active = layer;
+          } else {
+            others.push(layer);
+          }
+        }
+      }
+      setBasemaps({
+        active,
+        others,
+      })
+      setLayers(layers);
+      setStyle(map.current.getStyle());
     }
 
     function loadStyle() {
@@ -79,7 +96,8 @@ export default function MapContextProvider({ children }) {
     style,
     lazy,
     setLazy,
-    metadata: style.metadata,
+    metadata: style ? style.metadata : null,
+    basemaps,
   }
 
   return (
