@@ -105,7 +105,7 @@ export default function MapContextProvider({ children }) {
     lazy,
     setLazy,
     metadata: style ? style.metadata : null,
-    config: style ? style.metadata && style.metadata.config : null,
+    config: style && style.metadata && style.metadata.config ? style.metadata.config : {},
     basemaps,
     visibleLayers,
   }
