@@ -113,7 +113,10 @@ body {
     bottom: 5px;
     left: 410px;
 
-    .basemap-el figure {
-        border-radius: 6px;
+    .basemap-el  {
+        margin-bottom: 0 !important;
+        figure, figure > img {
+            border-radius: 6px;
+        }
     }
 }
