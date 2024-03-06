@@ -1,11 +1,12 @@
 import React from "react";
 import { MapContext } from "../contexts";
 import maplibregl from 'maplibre-gl';
+import find from 'lodash/find';
 
-function getLayer(layerId, map) {
-  const layer = map.getLayer(layerId);
+function getLayer(layerId, style) {
+  const layer = find(style.layers, l => l.id === layerId);
   if (layer) {
-    layer.isVisible = layer && layer.visibility === 'none' ? false : true;
+    layer.isVisible = layer && layer.layout && layer.layout.visibility === 'none' ? false : true;
   }
   return layer;
 }
@@ -35,7 +36,7 @@ export default function MapContextProvider({ children }) {
     active: null,
     others: [],
   });
-
+  const [visibleLayers, setVisibleLayers] = React.useState([]);
 
   const setMap = (m) => {
     map.current = m
@@ -47,8 +48,10 @@ export default function MapContextProvider({ children }) {
       const layers = {};
       let active = null;
       const others = [];
+      const visible = [];
+      const style = map.current.getStyle()
       for (const lid of map.current.getLayersOrder()) {
-        const layer = getLayer(lid, map.current)
+        const layer = getLayer(lid, style)
         layers[lid] = layer;
         if (layer.metadata && layer.metadata.is_basemap) {
           if (!active && layer.isVisible) {
@@ -56,14 +59,19 @@ export default function MapContextProvider({ children }) {
           } else {
             others.push(layer);
           }
+        } else {
+          if (layer.isVisible) {
+            visible.push(layer.id)
+          }
         }
       }
       setBasemaps({
         active,
         others,
       })
+      setVisibleLayers(visible);
       setLayers(layers);
-      setStyle(map.current.getStyle());
+      setStyle(style);
     }
 
     function loadStyle() {
@@ -97,7 +105,9 @@ export default function MapContextProvider({ children }) {
     lazy,
     setLazy,
     metadata: style ? style.metadata : null,
+    config: style ? style.metadata && style.metadata.config : null,
     basemaps,
+    visibleLayers,
   }
 
   return (
