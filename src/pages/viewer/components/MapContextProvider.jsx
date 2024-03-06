@@ -79,6 +79,7 @@ export default function MapContextProvider({ children }) {
     style,
     lazy,
     setLazy,
+    metadata: style.metadata,
   }
 
   return (

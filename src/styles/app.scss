@@ -107,3 +107,13 @@ body {
         }
     }
 }
+
+#basemap {
+    position: absolute;
+    bottom: 5px;
+    left: 410px;
+
+    .basemap-el figure {
+        border-radius: 6px;
+    }
+}

@@ -7,6 +7,8 @@ import { ProtocolV3 } from '@ninanor/maplibre-gl-cog';
 
 import { MapContext } from '../contexts';
 import LegendWidget from './LegendWidget';
+import BasemapWidget from './BasemapWidget';
+import { BACKGROUND_LAYER_ID } from '../../../constants';
 
 let protocol = new pmtiles.Protocol();
 let cogProtocol = new ProtocolV3()
@@ -51,7 +53,7 @@ const geocoderApi = {
   },
 };
 
-export default function Map({ style }) {
+export default function Map({ style = null }) {
   const mapContainer = useRef(null);
   const { setMap } = useContext(MapContext);
 
@@ -59,8 +61,21 @@ export default function Map({ style }) {
     if (style) {
       let m = new maplibregl.Map({
         container: mapContainer.current,
-        style: style,
+        style,
         transformRequest,
+      });
+
+      m.on('load', () => {
+        const order = m.getLayersOrder();
+        m.addLayer({
+            "id": BACKGROUND_LAYER_ID,
+            "type": "background",
+            "paint": {
+              "background-color": "#ccc",
+            }
+          },
+          order[0],
+        )
       });
 
       setMap(m);
@@ -80,6 +95,7 @@ export default function Map({ style }) {
     <div className="map-wrap">
       <div ref={mapContainer} className="map" />
       <LegendWidget />
+      <BasemapWidget />
     </div>
   );
 }
