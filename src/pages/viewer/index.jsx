@@ -7,13 +7,13 @@ import MapContextProvider from "./components/MapContextProvider";
 import Metadata from "./components/Metadata";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import mapApi from "../../api";
-import { NotFoundError } from "../../lib/utils";
-import { Content, Tabs } from "react-bulma-components";
+import { Content, Element, Tabs } from "react-bulma-components";
 import { useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
 import ModalContextProvider from "./components/ModalContextProvider";
 import Lazy from "./components/Lazy";
 import ErrorWrapper from "../../components/ErrorWrapper";
+import Footer from "../../components/Footer";
 
 const fetchMap = async (mapSlug) => {
   const map = await mapApi
@@ -112,9 +112,12 @@ export function Viewer() {
             <Metadata {...map.data} />
             <TabNav map={map} />
           </div>
-          <Map {...map.data} />
-          <Lazy lazy={map.data.lazy} />
+          <Element display="flex" flexDirection="column" id="content">
+            <Map {...map.data} />
+            <Footer />
+          </Element>
         </div>
+        <Lazy lazy={map.data.lazy} />
       </ModalContextProvider>
     </MapContextProvider>
   );

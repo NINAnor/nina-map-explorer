@@ -23,6 +23,8 @@ body {
   margin: 0;
 }
 
+$footer-height: 40px;
+
 
 .hero {
     .logo {
@@ -37,11 +39,24 @@ body {
 
 #app-wrap {
     height: 100vh;
-    overflow-y: hide;
+    overflow-y:hidden;
 
     #sidebar {
         width: 400px;
         overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #footer {
+        height: $footer-height;
+
+        .logo {
+            height: 28px;
+        }
+    }
+
+    #content {
+        flex-grow: 1;
     }
 
     .map {
@@ -78,7 +93,7 @@ body {
 #legend-box {
     width: 200px;
     position: absolute;
-    bottom: 25px;
+    bottom: 25px + $footer-height;
     right: 0;
 
     .title {
@@ -110,7 +125,7 @@ body {
 
 #basemap {
     position: absolute;
-    bottom: 5px;
+    bottom: 5px + $footer-height;
     left: 410px;
 
     .basemap-el  {

@@ -11,8 +11,7 @@ function Vertical({ title, subtitle, logo, config = {} }) {
         fullwidth
       />
       <Element display="flex" flexDirection="column" alignItems="center">
-        <Heading size={4} className="has-text-primary">{title}</Heading>
-        {subtitle && <Heading size={6} subtitle>{subtitle}</Heading>}
+        {subtitle && <Heading size={4} className="has-text-primary">{subtitle}</Heading>}
       </Element>
     </Element>
   )
