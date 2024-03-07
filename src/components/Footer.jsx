@@ -9,7 +9,7 @@ export default function Footer() {
                 <img src={logo} alt="nina logo" className='logo' />
                 <Element className='has-text-white is-size-7' ml={2}>Norsk institutt for naturforskning - www.nina.no</Element>
             </Element>
-            <Element className='has-text-white is-size-7' ml="auto">Samarbeid og kunnskap for framtiads miljøløsninger</Element>
+            <Element className='has-text-white is-size-7' ml="auto">Samarbeid og kunnskap for framtidas miljøløsninger</Element>
         </Element>
     )
 }
