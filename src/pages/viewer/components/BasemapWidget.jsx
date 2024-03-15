@@ -3,7 +3,7 @@ import { MapContext } from "../contexts"
 import { Image, Box, Element } from "react-bulma-components";
 import { BACKGROUND_LAYER_ID, BACKGROUND_TILES } from "../../../constants";
 
-function BasemapElement({ metadata, open, active = false, onClick, id, map, source }) {
+function BasemapElement({ metadata, active = false, onClick, id, map, source }) {
     const [url, setUrl] = useState(null);
 
     useEffect(() => {
@@ -23,15 +23,13 @@ function BasemapElement({ metadata, open, active = false, onClick, id, map, sour
     }, [map, source])
 
     return (
-        <Box clickable className="basemap-el" mr={1} p={1} backgroundColor={active && open ? 'link' : 'white'}>
+        <Box clickable className="basemap-el" mr={1} p={1} backgroundColor={active ? 'link' : 'white'}>
             <Image size={64} src={url} onClick={onClick} alt={metadata.name} backgroundColor="white" />
         </Box>
     )
 }
 
-function BasemapWidget({ map, active, others }) {
-    const [open, setOpen] = useState(false);
-
+function BasemapWidget({ map, active, layers }) {
     const setActiveBasemap = (layerId) => {
         map.setLayoutProperty(active.id, 'visibility', 'none');
         map.moveLayer(BACKGROUND_LAYER_ID, layerId);
@@ -42,8 +40,7 @@ function BasemapWidget({ map, active, others }) {
     return (
         <div id="basemap">
             <Element display="flex">
-                {active && <BasemapElement open={open} active {...active} onClick={() => setOpen(!open)} map={map} />}
-                {open && others.map(b => <BasemapElement key={b.id} {...b} onClick={() => setActiveBasemap(b.id)} map={map} />)}
+                {layers.map(b => <BasemapElement key={b.id} active={b.id === active.id} {...b} onClick={() => setActiveBasemap(b.id)} map={map} />)}
             </Element>
         </div>
     )

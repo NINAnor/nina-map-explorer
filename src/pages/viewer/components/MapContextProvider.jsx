@@ -34,7 +34,7 @@ export default function MapContextProvider({ children }) {
   const [lazy, setLazy] = React.useState({styles: {}, layers: {}});
   const [basemaps, setBasemaps] = React.useState({
     active: null,
-    others: [],
+    layers: [],
   });
   const [visibleLayers, setVisibleLayers] = React.useState([]);
 
@@ -47,7 +47,7 @@ export default function MapContextProvider({ children }) {
     function listenStyle() {
       const layers = {};
       let active = null;
-      const others = [];
+      const basemaps = [];
       const visible = [];
       const style = map.current.getStyle()
       for (const lid of map.current.getLayersOrder()) {
@@ -56,9 +56,8 @@ export default function MapContextProvider({ children }) {
         if (layer.metadata && layer.metadata.is_basemap) {
           if (!active && layer.isVisible) {
             active = layer;
-          } else {
-            others.push(layer);
           }
+          basemaps.push(layer);
         } else {
           if (layer.isVisible) {
             visible.push(layer.id)
@@ -67,7 +66,7 @@ export default function MapContextProvider({ children }) {
       }
       setBasemaps({
         active,
-        others,
+        layers: basemaps,
       })
       setVisibleLayers(visible);
       setLayers(layers);
