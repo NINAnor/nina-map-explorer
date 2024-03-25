@@ -34,7 +34,6 @@ function BasemapWidget({ map, active, layers }) {
         map.setLayoutProperty(active.id, 'visibility', 'none');
         map.moveLayer(BACKGROUND_LAYER_ID, layerId);
         map.setLayoutProperty(layerId, 'visibility', 'visible');
-        setOpen(false);
     }
 
     return (
