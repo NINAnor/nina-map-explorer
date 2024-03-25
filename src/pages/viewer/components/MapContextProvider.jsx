@@ -107,6 +107,7 @@ export default function MapContextProvider({ children }) {
     config: style && style.metadata && style.metadata.config ? style.metadata.config : {},
     basemaps,
     visibleLayers,
+    setVisibleLayers,
   }
 
   return (
