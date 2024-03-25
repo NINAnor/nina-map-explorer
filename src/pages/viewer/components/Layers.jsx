@@ -5,22 +5,22 @@ import LegendSymbol from "./LegendSymbol";
 import { Button } from "react-bulma-components";
 
 function Layer({ node }) {
-  const { map, layers, lazy, config, visibleLayers, setVisibleLayers } = useContext(MapContext);
+  const { map, layers, lazy, config, visibleLayers } = useContext(MapContext);
   const layer = layers[node.data.id];
 
   const icon = layer && layer.isVisible ? 'fas fa-eye' : 'fas fa-eye-slash';
 
   const updateVisibility = () => {
-    if (layer) {
-      if (config && config.exclusive_layers) {
-        for (const lid of visibleLayers) {
-          map.setLayoutProperty(lid, 'visibility', 'none');
-        }
+    if (config && config.exclusive_layers) {
+      for (const lid of visibleLayers) {
+        map.setLayoutProperty(lid, 'visibility', 'none');
       }
+    }
+
+    if (layer) {  
       map.setLayoutProperty(node.data.id, 'visibility', layer.isVisible ? 'none' : 'visible');
     } else {
       map.addLayer(lazy.layers[node.data.id]);
-      setVisibleLayers([...visibleLayers, node.data.id]);
     }
   }
 
