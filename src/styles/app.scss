@@ -91,7 +91,7 @@ $footer-height: 40px;
 }
 
 #legend-box {
-    width: 200px;
+    width: 250px;
     position: absolute;
     bottom: 25px + $footer-height;
     right: 0;
@@ -121,6 +121,22 @@ $footer-height: 40px;
             padding: 0.2rem;
         }
     }
+
+    .interval-legend-entry {
+        margin-top: 0.1rem;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 100%;
+
+        .column {
+            padding: 0.2rem ;
+        }
+        .bar {
+            max-width: 25px;
+        }
+    }
+   
 }
 
 #basemap {

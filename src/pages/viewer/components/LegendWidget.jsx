@@ -2,11 +2,13 @@ import { useContext, useMemo } from "react"
 import { MapContext } from "../contexts"
 import { Box } from "react-bulma-components";
 import SequentialLegend from "./legend-types/Sequential";
+import IntervalLegend from "./legend-types/Interval";
 
 
 function LegendRender({ type, ...data }) {
     switch(type) {
         case 'sequential': return <SequentialLegend {...data} />;
+        case 'interval': return <IntervalLegend {...data} />;
         default: null;
     }
 }
