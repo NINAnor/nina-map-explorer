@@ -4,6 +4,14 @@ import { MapContext, ModalContext } from "../contexts";
 import LegendSymbol from "./LegendSymbol";
 import { Button } from "react-bulma-components";
 
+function flyToLayer(map, layer) {
+  if (map && layer && layer.source) {
+    let bounds = map.getSource(layer.source).bounds;
+    map.fitBounds(bounds);
+    map.zoomOut();
+  }
+}
+
 function Layer({ node }) {
   const { map, layers, lazy, config, visibleLayers } = useContext(MapContext);
   const layer = layers[node.data.id];
@@ -38,11 +46,18 @@ function Layer({ node }) {
   }, [layer, lazy])
 
   return (
-    <div onClick={updateVisibility} style={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-      <i className={icon}></i>
-      <div style={{ width: '17px', height: '17px', margin: '0 0.5rem' }}>{legend}</div>
-      <div>{node.data.name}</div>
-    </div>  
+    <>
+      <div onClick={updateVisibility} style={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+        <i className={icon}></i>
+        <div style={{ width: '17px', height: '17px', margin: '0 0.5rem' }}>{legend}</div>
+        <div>{node.data.name}</div>
+      </div>  
+      {config && config.zoom_to_extend && map && layer && layer.isVisible && layer.source && (
+        <div>
+          <Button size="small" text onClick={() => flyToLayer(map, layer)}><i className="fas fa-expand"></i></Button>
+        </div>
+      )}
+    </>
   );
 }
 
