@@ -8,7 +8,6 @@ function flyToLayer(map, layer) {
   if (map && layer && layer.source) {
     let bounds = map.getSource(layer.source).bounds;
     map.fitBounds(bounds);
-    map.zoomOut();
   }
 }
 
