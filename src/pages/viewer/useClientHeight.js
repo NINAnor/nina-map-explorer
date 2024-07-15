@@ -1,9 +1,10 @@
 import { useLayoutEffect, useRef, useState } from "react";
+import useResizeObserver from "use-resize-observer";
 
 export default function useClientHeight() {
   const [height, setHeight] = useState(0);
-
   const ref = useRef(null);
+  const { height: bbh } = useResizeObserver(ref);
 
   useLayoutEffect(() => {
     const height = ref.current.offsetHeight;
@@ -15,7 +16,7 @@ export default function useClientHeight() {
     setHeight(
       height + parseInt(style.marginBottom) + parseInt(style.marginTop),
     );
-  }, [ref.current]);
+  }, [ref.current, bbh]);
 
   return { height, ref };
 }
