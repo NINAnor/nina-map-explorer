@@ -15,7 +15,7 @@ export default function useClientHeight() {
     setHeight(
       height + parseInt(style.marginBottom) + parseInt(style.marginTop),
     );
-  }, []);
+  }, [ref.current]);
 
   return { height, ref };
 }

@@ -4,3 +4,7 @@ export const BACKGROUND_TILES = {
   y: 4,
   z: 4,
 };
+
+export const TABLET_SIZE = 770;
+export const DESKTOP_SIZE = 960;
+export const HD_SIZE = 1200;

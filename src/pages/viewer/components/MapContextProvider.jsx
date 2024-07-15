@@ -33,6 +33,7 @@ function setCursorStyle(style, map) {
 
 export default function MapContextProvider({ children }) {
   const map = React.useRef(null);
+  const [sidebar, setSidebar] = React.useState(true);
   const [ready, setReady] = React.useState(false);
   const [layers, setLayers] = React.useState({});
   const [style, setStyle] = React.useState(null);
@@ -120,6 +121,8 @@ export default function MapContextProvider({ children }) {
     basemaps,
     visibleLayers,
     setVisibleLayers,
+    setSidebar,
+    sidebar,
   };
 
   return <MapContext.Provider value={value}>{children}</MapContext.Provider>;

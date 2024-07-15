@@ -5,6 +5,8 @@ import LegendSymbol from "./LegendSymbol";
 import { Icon } from "react-bulma-components";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { HD_SIZE } from "../../../constants";
+import { useMediaQuery } from "react-responsive";
 
 function flyToLayer(map, layer) {
   if (map && layer && layer.source) {
@@ -165,10 +167,12 @@ function Child({ data, isOpen, style, setOpen }) {
   );
 }
 
-const getNodeData = (node, nestingLevel) => ({
+const getNodeData = (node, nestingLevel, isSmallScreen) => ({
   data: {
     ...node,
-    defaultHeight: (Math.round(node.name.length / 80) + 1) * 30,
+    defaultHeight: isSmallScreen
+      ? 30
+      : (Math.round(node.name.length / 80) + 1) * 30,
     // defaultHeight: 60,
     id: node.id.toString(), // mandatory
     isLeaf: node.children ? node.children.length === 0 : true,
@@ -181,10 +185,12 @@ const getNodeData = (node, nestingLevel) => ({
 });
 
 export default function Layers({ layers = [] }) {
+  const isSmallScreen = useMediaQuery({ maxWidth: HD_SIZE });
+
   const tw = useMemo(() => {
     function* treeWalker() {
       for (let layer of layers) {
-        yield getNodeData(layer, 0);
+        yield getNodeData(layer, 0, isSmallScreen);
       }
 
       while (true) {
@@ -196,14 +202,18 @@ export default function Layers({ layers = [] }) {
           for (let i = 0; i < parent.node.children.length; i++) {
             // Step [3]: Yielding all the children of the provided component. Then we
             // will return for the step [2] with the first children.
-            yield getNodeData(parent.node.children[i], parent.nestingLevel + 1);
+            yield getNodeData(
+              parent.node.children[i],
+              parent.nestingLevel + 1,
+              isSmallScreen,
+            );
           }
         }
       }
     }
 
     return treeWalker;
-  }, [layers]);
+  }, [layers, isSmallScreen]);
 
   return (
     <div className="layers">

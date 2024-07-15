@@ -53,6 +53,8 @@ $footer-height: 40px;
   }
 
   #content {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
   }
 
@@ -137,9 +139,11 @@ $footer-height: 40px;
 }
 
 #basemap {
-  position: absolute;
-  bottom: 5px + $footer-height;
-  left: 410px;
+  position: relative;
+  bottom: 5px + 72px;
+  left: 5px;
+  max-width: calc(100vw - (400px + 5px));
+  display: flex;
 
   .basemap-el {
     margin-bottom: 0 !important;
@@ -186,4 +190,32 @@ $footer-height: 40px;
   a {
     padding: 0.5rem 1rem !important;
   }
+}
+
+#sidebar-mobile {
+  position: absolute;
+  z-index: 500;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  background-color: white;
+  padding: 0 1rem;
+
+  .layers {
+    padding: 0 8px;
+    height: 100%;
+  }
+}
+
+#sidebar-open {
+  position: absolute;
+  top: 60px + 10px;
+  left: 10px;
+}
+
+#sidebar-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }
