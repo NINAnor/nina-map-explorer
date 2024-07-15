@@ -30,7 +30,6 @@ const getStyleObjectFromString = str => {
 
 // Transforms xml attributes in React compatible attributes (dash to camelCase, className)
 function transformAttributes(attributes) {
-  console.log(attributes)
   const copy = {}
   Object.keys(attributes).forEach(k => {
     copy[k.replace(/-([a-z])/g, (match, letter) => letter.toUpperCase())] = attributes[k];
@@ -41,7 +40,7 @@ function transformAttributes(attributes) {
     delete copy.class;
   }
 
-  if (copy.style) {
+  if (copy.style && typeof copy.style == 'string') {
     copy.style = getStyleObjectFromString(copy.style);
   }
 
@@ -68,8 +67,6 @@ function LegendSymbol(layer, map) {
   if (!symbol) {
     return <i className='fas fa-image'></i>
   }
-
-  console.log(layer.id, symbol)
 
   return symbol;
 }
