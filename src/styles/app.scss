@@ -79,6 +79,7 @@ $footer-height: 40px;
 
     .layers {
         padding: 0 8px;
+        height: 100%;
     }
 }
 
@@ -149,5 +150,45 @@ $footer-height: 40px;
         figure, figure > img {
             border-radius: 6px;
         }
+    }
+}
+
+.row {
+    .row-wrapper {
+        display: flex;
+        align-items: start;
+        padding-top: 2px;
+        padding-bottom: 2px;
+
+        .legend-wrapper {
+            width: 17px;
+            height: 17px;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .node-name {
+            margin-left: 0.2rem;
+            flex-grow: 1;
+            text-wrap: stable;
+        }
+        
+        a {
+            color: $nina-primary;
+        }
+
+    }
+   
+}
+
+.node-menu {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid $nina-primary;
+    border-radius: 5px;
+
+    a {
+        padding: 0.5rem  1rem !important;
     }
 }

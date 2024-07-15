@@ -1,7 +1,7 @@
 import { ErrorComponent, Route } from "@tanstack/react-router";
 import parse from 'html-react-parser';
 import rootRoute from "../root";
-import Layers from "./components/Layers";
+import Layers from "./components/LayersVTree";
 import Map from "./components/Map";
 import MapContextProvider from "./components/MapContextProvider";
 import Metadata from "./components/Metadata";

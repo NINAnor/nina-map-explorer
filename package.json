@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.2",
     "@maplibre/maplibre-gl-geocoder": "1.5.0",
     "@ninanor/maplibre-gl-cog": "^0.0.2",
     "@sentry/react": "^7.102.1",
@@ -33,6 +34,8 @@
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-responsive": "^9.0.2",
+    "react-virtualized-auto-sizer": "^1.0.24",
+    "react-vtree": "^3.0.0-beta.3",
     "rollup": "^4.5.2",
     "swr": "^2.2.4"
   },
