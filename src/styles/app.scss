@@ -1,8 +1,8 @@
 // definition
 $nina-primary: #425563;
-$nina-secondary: #008C95;
+$nina-secondary: #008c95;
 
-$nina-accent: #E57200;
+$nina-accent: #e57200;
 
 // override
 $primary: $nina-primary;
@@ -12,10 +12,9 @@ $family-secondary: "Open Sans", Helvetica, Arial;
 
 @import "../node_modules/bulma/bulma.sass";
 
-
-@import 'maplibre-gl/dist/maplibre-gl.css';
-@import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
-@import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css';
+@import "maplibre-gl/dist/maplibre-gl.css";
+@import "@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css";
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css";
 
 html,
 body {
@@ -25,62 +24,60 @@ body {
 
 $footer-height: 40px;
 
-
 .hero {
-    .logo {
-        max-height: 5rem;
-    }
+  .logo {
+    max-height: 5rem;
+  }
 
-    .title:not(.is-spaced) + .subtitle {
-        margin-top: -0.9rem;
-    }
+  .title:not(.is-spaced) + .subtitle {
+    margin-top: -0.9rem;
+  }
 }
 
-
 #app-wrap {
-    height: 100vh;
-    overflow-y:hidden;
+  height: 100vh;
+  overflow-y: hidden;
 
-    #sidebar {
-        width: 400px;
-        overflow-y: auto;
-        overflow-x: hidden;
+  #sidebar {
+    width: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  #footer {
+    height: $footer-height;
+
+    .logo {
+      height: 28px;
     }
+  }
 
-    #footer {
-        height: $footer-height;
+  #content {
+    flex-grow: 1;
+  }
 
-        .logo {
-            height: 28px;
-        }
-    }
+  .map {
+    height: 100%;
+    z-index: 0;
+  }
 
-    #content {
-        flex-grow: 1;
-    }
+  .map-wrap {
+    flex-grow: 1;
+  }
 
-    .map {
-        height: 100%;
-        z-index: 0;
-    }
+  .maplibregl-popup {
+    max-width: 100% !important;
+    line-height: 1em;
+  }
 
-    .map-wrap {
-        flex-grow: 1;
-    }
+  .metadata {
+    padding: 0 0.5rem;
+  }
 
-    .maplibregl-popup {
-        max-width: 100% !important;
-        line-height: 1em;
-    }
-
-    .metadata {
-        padding: 0 0.5rem;
-    }
-
-    .layers {
-        padding: 0 8px;
-        height: 100%;
-    }
+  .layers {
+    padding: 0 8px;
+    height: 100%;
+  }
 }
 
 .wrapper {
@@ -92,103 +89,101 @@ $footer-height: 40px;
 }
 
 #legend-box {
-    width: 250px;
-    position: absolute;
-    bottom: 25px + $footer-height;
-    right: 0;
+  width: 250px;
+  position: absolute;
+  bottom: 25px + $footer-height;
+  right: 0;
 
-    .title {
-        padding-bottom: 0.2rem;
-        margin-bottom: 0;
+  .title {
+    padding-bottom: 0.2rem;
+    margin-bottom: 0;
+  }
+
+  .sequential-legend-vertical .descriptors {
+    padding: 0.2rem;
+
+    & > .column {
+      padding: 0.2rem;
+    }
+  }
+
+  .sequential-legend-horizontal {
+    .column {
+      padding: 0.1;
+    }
+    & .descriptors {
+      padding: 0.2rem;
     }
 
-    .sequential-legend-vertical .descriptors {
-        padding: 0.2rem;
-
-        & > .column {
-            padding: 0.2rem;
-        }
+    & > .column {
+      padding: 0.2rem;
     }
+  }
 
-    .sequential-legend-horizontal {
-        .column {
-            padding: 0.1;
-        }
-        & .descriptors {
-            padding: 0.2rem;
-        }
+  .interval-legend-entry {
+    margin-top: 0.1rem;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 100%;
 
-        & > .column {
-            padding: 0.2rem;
-        }
+    .column {
+      padding: 0.2rem;
     }
-
-    .interval-legend-entry {
-        margin-top: 0.1rem;
-        margin-left: 0;
-        margin-right: 0;
-        margin-bottom: 0;
-        width: 100%;
-
-        .column {
-            padding: 0.2rem ;
-        }
-        .bar {
-            max-width: 25px;
-        }
+    .bar {
+      max-width: 25px;
     }
-   
+  }
 }
 
 #basemap {
-    position: absolute;
-    bottom: 5px + $footer-height;
-    left: 410px;
+  position: absolute;
+  bottom: 5px + $footer-height;
+  left: 410px;
 
-    .basemap-el  {
-        margin-bottom: 0 !important;
-        figure, figure > img {
-            border-radius: 6px;
-        }
+  .basemap-el {
+    margin-bottom: 0 !important;
+    figure,
+    figure > img {
+      border-radius: 6px;
     }
+  }
 }
 
 .row {
-    .row-wrapper {
-        display: flex;
-        align-items: start;
-        padding-top: 2px;
-        padding-bottom: 2px;
+  .row-wrapper {
+    display: flex;
+    align-items: start;
+    padding-top: 2px;
+    padding-bottom: 2px;
 
-        .legend-wrapper {
-            width: 17px;
-            height: 17px;
-            margin-left: 5px;
-            margin-right: 5px;
-        }
-
-        .node-name {
-            margin-left: 0.2rem;
-            flex-grow: 1;
-            text-wrap: stable;
-        }
-        
-        a {
-            color: $nina-primary;
-        }
-
+    .legend-wrapper {
+      width: 17px;
+      height: 17px;
+      margin-left: 5px;
+      margin-right: 5px;
     }
-   
+
+    .node-name {
+      margin-left: 0.2rem;
+      flex-grow: 1;
+      text-wrap: stable;
+    }
+
+    a {
+      color: $nina-primary;
+    }
+  }
 }
 
 .node-menu {
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    border: 1px solid $nina-primary;
-    border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 1px solid $nina-primary;
+  border-radius: 5px;
 
-    a {
-        padding: 0.5rem  1rem !important;
-    }
+  a {
+    padding: 0.5rem 1rem !important;
+  }
 }

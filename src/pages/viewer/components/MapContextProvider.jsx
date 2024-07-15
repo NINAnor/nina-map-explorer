@@ -1,12 +1,15 @@
 import React from "react";
 import { MapContext } from "../contexts";
-import maplibregl from 'maplibre-gl';
-import find from 'lodash/find';
+import maplibregl from "maplibre-gl";
+import find from "lodash/find";
 
 function getLayer(layerId, style) {
-  const layer = find(style.layers, l => l.id === layerId);
+  const layer = find(style.layers, (l) => l.id === layerId);
   if (layer) {
-    layer.isVisible = layer && layer.layout && layer.layout.visibility === 'none' ? false : true;
+    layer.isVisible =
+      layer && layer.layout && layer.layout.visibility === "none"
+        ? false
+        : true;
   }
   return layer;
 }
@@ -16,7 +19,9 @@ function popup(e) {
   let html =
     "<table class='table is-bordered is-striped is-narrow is-hoverable is-fullwidth'><tbody>" +
     Object.keys(properties)
-      .map((key) => `<tr><td><b>${key}</b></td><td>${properties[key]}</td></tr>`)
+      .map(
+        (key) => `<tr><td><b>${key}</b></td><td>${properties[key]}</td></tr>`,
+      )
       .reduce((a, b) => a + b) +
     "</tbody></table>";
   return new maplibregl.Popup().setLngLat(e.lngLat).setHTML(html);
@@ -31,7 +36,7 @@ export default function MapContextProvider({ children }) {
   const [ready, setReady] = React.useState(false);
   const [layers, setLayers] = React.useState({});
   const [style, setStyle] = React.useState(null);
-  const [lazy, setLazy] = React.useState({styles: {}, layers: {}});
+  const [lazy, setLazy] = React.useState({ styles: {}, layers: {} });
   const [basemaps, setBasemaps] = React.useState({
     active: null,
     layers: [],
@@ -39,9 +44,9 @@ export default function MapContextProvider({ children }) {
   const [visibleLayers, setVisibleLayers] = React.useState([]);
 
   const setMap = (m) => {
-    map.current = m
+    map.current = m;
     setReady(true);
-  }
+  };
 
   React.useEffect(() => {
     function listenStyle() {
@@ -49,9 +54,9 @@ export default function MapContextProvider({ children }) {
       let active = null;
       const basemaps = [];
       const visible = [];
-      const style = map.current.getStyle()
+      const style = map.current.getStyle();
       for (const lid of map.current.getLayersOrder()) {
-        const layer = getLayer(lid, style)
+        const layer = getLayer(lid, style);
         layers[lid] = layer;
         if (layer.metadata && layer.metadata.is_basemap) {
           if (!active && layer.isVisible) {
@@ -60,14 +65,14 @@ export default function MapContextProvider({ children }) {
           basemaps.push(layer);
         } else {
           if (layer.isVisible) {
-            visible.push(layer.id)
+            visible.push(layer.id);
           }
         }
       }
       setBasemaps({
         active,
         layers: basemaps,
-      })
+      });
       setVisibleLayers(visible);
       setLayers(layers);
       setStyle(style);
@@ -80,20 +85,24 @@ export default function MapContextProvider({ children }) {
 
       for (const layer of style.layers) {
         map.current.on("click", layer.id, (e) => popup(e).addTo(map.current));
-        map.current.on("mouseenter", layer.id, () => setCursorStyle("pointer", map.current));
-        map.current.on("mouseleave", layer.id, () => setCursorStyle("", map.current));
+        map.current.on("mouseenter", layer.id, () =>
+          setCursorStyle("pointer", map.current),
+        );
+        map.current.on("mouseleave", layer.id, () =>
+          setCursorStyle("", map.current),
+        );
       }
     }
-    
+
     if (ready) {
-      map.current.on('styledata', listenStyle);
-      map.current.on('style.load', loadStyle);
+      map.current.on("styledata", listenStyle);
+      map.current.on("style.load", loadStyle);
       return () => {
-        map.current.off('style.load', loadStyle);
-        map.current.off('styledata', listenStyle);
-      }
+        map.current.off("style.load", loadStyle);
+        map.current.off("styledata", listenStyle);
+      };
     }
-  }, [ready])
+  }, [ready]);
 
   const value = {
     map: map.current,
@@ -104,16 +113,14 @@ export default function MapContextProvider({ children }) {
     lazy,
     setLazy,
     metadata: style ? style.metadata : null,
-    config: style && style.metadata && style.metadata.config ? style.metadata.config : {},
+    config:
+      style && style.metadata && style.metadata.config
+        ? style.metadata.config
+        : {},
     basemaps,
     visibleLayers,
     setVisibleLayers,
-  }
+  };
 
-  return (
-    <MapContext.Provider value={value}>
-      {children}
-    </MapContext.Provider>
-  )
+  return <MapContext.Provider value={value}>{children}</MapContext.Provider>;
 }
-

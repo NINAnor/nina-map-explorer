@@ -1,6 +1,6 @@
-@import 'maplibre-gl/dist/maplibre-gl.css';
-@import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
-@import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css';
+@import "maplibre-gl/dist/maplibre-gl.css";
+@import "@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css";
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css";
 
 html,
 body {
@@ -9,21 +9,21 @@ body {
 }
 
 .map {
-    height: 100%;
-    z-index: 0;
+  height: 100%;
+  z-index: 0;
 }
 
 .map-wrap {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 #app-wrap {
-    height: 100vh;
-    overflow-y: hide;
+  height: 100vh;
+  overflow-y: hide;
 }
 #sidebar {
-    width: 400px;
-    overflow-y: auto;
-    padding: 0 0.5rem;
+  width: 400px;
+  overflow-y: auto;
+  padding: 0 0.5rem;
 }
 
 .maplibregl-popup {
@@ -38,7 +38,8 @@ table tr:nth-child(odd) {
   padding: 0.5rem;
 }
 
-h5, h3 {
+h5,
+h3 {
   margin: 0;
   padding: 1rem 0;
 }

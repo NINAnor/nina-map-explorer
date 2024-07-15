@@ -1,28 +1,34 @@
-import { Route } from "@tanstack/react-router"
-import rootRoute from "../root"
+import { Route } from "@tanstack/react-router";
+import rootRoute from "../root";
 import { queryOptions } from "@tanstack/react-query";
 import { MapsList } from "./MapsList";
 import mapApi from "../../api";
-import { Container, Heading, Hero, Media, Message } from "react-bulma-components";
+import {
+  Container,
+  Heading,
+  Hero,
+  Media,
+  Message,
+} from "react-bulma-components";
 
-import logo from '../../assets/logowhite.png';
+import logo from "../../assets/logowhite.png";
 import { NotFoundError } from "../../lib/utils";
 
 const fetchPortal = async () => {
-  const map = await mapApi
-    .get(`portals/${window.PORTAL_KEY}/`)
+  const map = await mapApi.get(`portals/${window.PORTAL_KEY}/`);
 
   if (!map) {
-    throw new NotFoundError(`Portal not found!`)
+    throw new NotFoundError(`Portal not found!`);
   }
 
-  return map
-}
+  return map;
+};
 
-const portalOptions = () => queryOptions({
-  queryKey: ['portals'],
-  queryFn: fetchPortal,
-})
+const portalOptions = () =>
+  queryOptions({
+    queryKey: ["portals"],
+    queryFn: fetchPortal,
+  });
 
 function IndexHero() {
   return (
@@ -31,29 +37,28 @@ function IndexHero() {
         <Container>
           <Media className="">
             <Media.Item align="left">
-              <img
-                src={logo}
-                className="logo"
-              />
+              <img src={logo} className="logo" />
             </Media.Item>
             <Media.Item align="center">
               <Heading weight="bold">Maps</Heading>
-              <Heading renderAs="h3" size={3} subtitle>Official NINA Maps</Heading>
+              <Heading renderAs="h3" size={3} subtitle>
+                Official NINA Maps
+              </Heading>
             </Media.Item>
           </Media>
         </Container>
       </Hero.Body>
     </Hero>
-  )
+  );
 }
 
-
 function IndexErrorComponent({ error }) {
-  let message = error.message
+  let message = error.message;
   if (error instanceof NotFoundError) {
     message = "Unable to load maps";
   } else if (error.message === "Network Error") {
-    message = "Unable to load maps, there was a network error while connecting to the maps server.";
+    message =
+      "Unable to load maps, there was a network error while connecting to the maps server.";
   }
 
   return (
@@ -63,16 +68,13 @@ function IndexErrorComponent({ error }) {
         <div className="py-4">
           <Message color="danger">
             <Message.Header>There was en error</Message.Header>
-            <Message.Body>
-              {message}
-            </Message.Body>
+            <Message.Body>{message}</Message.Body>
           </Message>
         </div>
       </Container>
     </>
-  )
+  );
 }
-
 
 export function IndexPage() {
   return (
@@ -90,8 +92,8 @@ export function IndexPage() {
 export const indexRoute = new Route({
   getParentRoute: () => rootRoute,
   component: IndexPage,
-  path: '/',
+  path: "/",
   errorComponent: IndexErrorComponent,
-  loader: ({ context: { queryClient }}) => 
-    queryClient.ensureQueryData(portalOptions())
-})
+  loader: ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData(portalOptions()),
+});

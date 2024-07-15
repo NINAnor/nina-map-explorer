@@ -1,8 +1,7 @@
 import React, { useCallback } from "react";
 import { ModalContext } from "../contexts";
 import { Content, Modal } from "react-bulma-components";
-import parse from 'html-react-parser';
-
+import parse from "html-react-parser";
 
 export default function ModalContextProvider({ children }) {
   const [node, setNode] = React.useState(null);
@@ -18,13 +17,10 @@ export default function ModalContextProvider({ children }) {
             <Modal.Card.Title>{node && node.name}</Modal.Card.Title>
           </Modal.Card.Header>
           <Modal.Card.Body>
-            <Content>
-              {node && parse(node.description)}
-            </Content>
+            <Content>{node && parse(node.description)}</Content>
           </Modal.Card.Body>
         </Modal.Card>
       </Modal>
     </ModalContext.Provider>
-  )
+  );
 }
-

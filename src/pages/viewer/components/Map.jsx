@@ -1,30 +1,31 @@
-import { useRef, useEffect, useContext } from 'react';
-import maplibregl from 'maplibre-gl';
-import MaplibreGeocoder from '@maplibre/maplibre-gl-geocoder';
+import { useRef, useEffect, useContext } from "react";
+import maplibregl from "maplibre-gl";
+import MaplibreGeocoder from "@maplibre/maplibre-gl-geocoder";
 
-import * as pmtiles from 'pmtiles';
-import { ProtocolV3 } from '@ninanor/maplibre-gl-cog';
+import * as pmtiles from "pmtiles";
+import { ProtocolV3 } from "@ninanor/maplibre-gl-cog";
 
-import { MapContext } from '../contexts';
-import LegendWidget from './LegendWidget';
-import BasemapWidget from './BasemapWidget';
-import { BACKGROUND_LAYER_ID } from '../../../constants';
+import { MapContext } from "../contexts";
+import LegendWidget from "./LegendWidget";
+import BasemapWidget from "./BasemapWidget";
+import { BACKGROUND_LAYER_ID } from "../../../constants";
 
 let protocol = new pmtiles.Protocol();
-let cogProtocol = new ProtocolV3()
-maplibregl.addProtocol('pmtiles', protocol.tile);
-maplibregl.addProtocol('cog', cogProtocol.tile);
-
+let cogProtocol = new ProtocolV3();
+maplibregl.addProtocol("pmtiles", protocol.tile);
+maplibregl.addProtocol("cog", cogProtocol.tile);
 
 // This is necessary to load map styles of protected resources
-const transformRequest = window.TRANSFORM_REQUEST || ((url, resourceType) => {
-  if (resourceType === 'Style' && url.startsWith(window.API_URL)) {
-    return {
-      url: url,
-      credentials: 'include',
+const transformRequest =
+  window.TRANSFORM_REQUEST ||
+  ((url, resourceType) => {
+    if (resourceType === "Style" && url.startsWith(window.API_URL)) {
+      return {
+        url: url,
+        credentials: "include",
+      };
     }
-  }
-})
+  });
 
 const geocoderApi = {
   forwardGeocode: async (config) => {
@@ -67,25 +68,25 @@ export default function Map({ style = null }) {
 
       setMap(m);
 
-      m.on('load', () => {
+      m.on("load", () => {
         const order = m.getLayersOrder();
-        m.addLayer({
-            "id": BACKGROUND_LAYER_ID,
-            "type": "background",
-            "paint": {
+        m.addLayer(
+          {
+            id: BACKGROUND_LAYER_ID,
+            type: "background",
+            paint: {
               "background-color": "#ccc",
-            }
+            },
           },
           order[0],
-        )
+        );
       });
 
-
-      m.addControl(new maplibregl.NavigationControl(), 'top-right');
+      m.addControl(new maplibregl.NavigationControl(), "top-right");
       m.addControl(
         new MaplibreGeocoder(geocoderApi, {
-          "maplibregl": maplibregl,
-          "placeholder": "Søk",
+          maplibregl: maplibregl,
+          placeholder: "Søk",
         }),
         "top-left",
       );
@@ -98,7 +99,7 @@ export default function Map({ style = null }) {
       {map && (
         <>
           <LegendWidget />
-          <BasemapWidget />      
+          <BasemapWidget />
         </>
       )}
     </div>

@@ -1,5 +1,5 @@
 import { ErrorComponent, Route } from "@tanstack/react-router";
-import parse from 'html-react-parser';
+import parse from "html-react-parser";
 import rootRoute from "../root";
 import Layers from "./components/LayersVTree";
 import Map from "./components/Map";
@@ -17,35 +17,32 @@ import Footer from "../../components/Footer";
 import useClientHeight from "./useClientHeight";
 
 const fetchMap = async (mapSlug) => {
-  const map = await mapApi
-    .get(`maps/${mapSlug}/metadata/`);
-  return map
-}
-
+  const map = await mapApi.get(`maps/${mapSlug}/metadata/`);
+  return map;
+};
 
 const mapQueryOptions = (mapSlug) =>
   queryOptions({
-    queryKey: ['maps', { mapSlug }],
+    queryKey: ["maps", { mapSlug }],
     queryFn: () => fetchMap(mapSlug),
-  })
-
+  });
 
 export const viewerRoute = new Route({
   component: Viewer,
-  path: 'datasets/$mapSlug',
+  path: "datasets/$mapSlug",
   getParentRoute: () => rootRoute,
   errorComponent: MapErrorComponent,
   loader: ({ context: { queryClient }, params: { mapSlug } }) =>
     queryClient.ensureQueryData(mapQueryOptions(mapSlug)),
-})
+});
 
 function MapErrorComponent({ error }) {
   if (error.response) {
     if (error.response.status == 404) {
-      return <ErrorWrapper>The map does not exists</ErrorWrapper>
+      return <ErrorWrapper>The map does not exists</ErrorWrapper>;
     }
     if (error.response.data) {
-      return <ErrorWrapper>{error.response.data}</ErrorWrapper>
+      return <ErrorWrapper>{error.response.data}</ErrorWrapper>;
     }
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
@@ -59,49 +56,42 @@ function MapErrorComponent({ error }) {
     console.log(error.request);
   }
 
-  return <ErrorComponent error={error} />
+  return <ErrorComponent error={error} />;
 }
-
 
 const TABS = {
   kartlag: {
-    label: 'Kartlag',
+    label: "Kartlag",
     render: (map) => <Layers layers={map.data.layers} />,
   },
   beskrivelse: {
-    label: 'Beskrivelse',
-    render: (map) => (
-    <Content px={2}>
-      {parse(map.data.description)}
-    </Content>
-    )
-  }
-}
+    label: "Beskrivelse",
+    render: (map) => <Content px={2}>{parse(map.data.description)}</Content>,
+  },
+};
 
 function TabNav({ map, top = 0 }) {
-  const [active, setActive] = useState('kartlag');
+  const [active, setActive] = useState("kartlag");
 
-  const { height, ref } = useClientHeight()
+  const { height, ref } = useClientHeight();
 
   const render = useMemo(() => TABS[active].render(map), [active, map]);
 
   return (
     <>
       <Tabs fullwidth mt={3} domRef={ref}>
-        {Object.keys(TABS).map(k => (
+        {Object.keys(TABS).map((k) => (
           <Tabs.Tab active={k === active} key={k} onClick={() => setActive(k)}>
             {TABS[k].label}
           </Tabs.Tab>
         ))}
       </Tabs>
-      <div style={{ height: `calc(100vh - ${height + top}px)` }}>
-        {render}
-      </div>
+      <div style={{ height: `calc(100vh - ${height + top}px)` }}>{render}</div>
     </>
-  )
+  );
 }
 
-export function Viewer() { 
+export function Viewer() {
   const { height, ref } = useClientHeight();
   const { mapSlug } = viewerRoute.useParams();
   const mapQuery = useSuspenseQuery(mapQueryOptions(mapSlug));
@@ -110,10 +100,8 @@ export function Viewer() {
   return (
     <MapContextProvider>
       <ModalContextProvider>
-        <Helmet 
-          title={map.data.title}
-        />
-        <div id="app-wrap" style={{ display: 'flex' }}>
+        <Helmet title={map.data.title} />
+        <div id="app-wrap" style={{ display: "flex" }}>
           <div id="sidebar">
             <Metadata {...map.data} metadataRef={ref} />
             <TabNav map={map} top={height} />
