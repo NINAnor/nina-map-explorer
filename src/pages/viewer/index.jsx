@@ -14,6 +14,7 @@ import ModalContextProvider from "./components/ModalContextProvider";
 import Lazy from "./components/Lazy";
 import ErrorWrapper from "../../components/ErrorWrapper";
 import Footer from "../../components/Footer";
+import useClientHeight from "./useClientHeight";
 
 const fetchMap = async (mapSlug) => {
   const map = await mapApi
@@ -77,26 +78,31 @@ const TABS = {
   }
 }
 
-function TabNav({ map }) {
+function TabNav({ map, top = 0 }) {
   const [active, setActive] = useState('kartlag');
+
+  const { height, ref } = useClientHeight()
 
   const render = useMemo(() => TABS[active].render(map), [active, map]);
 
   return (
     <>
-      <Tabs fullwidth mt={3}>
+      <Tabs fullwidth mt={3} domRef={ref}>
         {Object.keys(TABS).map(k => (
           <Tabs.Tab active={k === active} key={k} onClick={() => setActive(k)}>
             {TABS[k].label}
           </Tabs.Tab>
         ))}
       </Tabs>
-      {render}
+      <div style={{ height: `calc(100vh - ${height + top}px)` }}>
+        {render}
+      </div>
     </>
   )
 }
 
 export function Viewer() { 
+  const { height, ref } = useClientHeight();
   const { mapSlug } = viewerRoute.useParams();
   const mapQuery = useSuspenseQuery(mapQueryOptions(mapSlug));
   const map = mapQuery.data;
@@ -109,8 +115,8 @@ export function Viewer() {
         />
         <div id="app-wrap" style={{ display: 'flex' }}>
           <div id="sidebar">
-            <Metadata {...map.data} />
-            <TabNav map={map} />
+            <Metadata {...map.data} metadataRef={ref} />
+            <TabNav map={map} top={height} />
           </div>
           <Element display="flex" flexDirection="column" id="content">
             <Map {...map.data} />
