@@ -1,7 +1,8 @@
 import { Element, Heading, Image, Media } from "react-bulma-components";
 import logoFallback from "../../../assets/logosmall.png";
-import { useContext, useMemo } from "react";
-import { MapContext } from "../contexts";
+import { useMemo } from "react";
+import { useStore } from "@tanstack/react-store";
+import { mapStore, selectors } from "../mapStore";
 
 function Vertical({ subtitle, logo }) {
   return (
@@ -39,15 +40,15 @@ function Horizontal({ title, subtitle, logo }) {
 }
 
 export default function Metadata({ metadataRef }) {
-  const { config = {}, metadata } = useContext(MapContext);
+  const metadata = useStore(mapStore, selectors.getMetadata);
 
   const layout = useMemo(() => {
-    if (config.logoLayout === "vertical") {
+    if (metadata.logoLayout === "vertical") {
       return <Vertical {...metadata} />;
     }
 
     return <Horizontal {...metadata} />;
-  }, [config, metadata]);
+  }, [metadata]);
 
   return (
     <div ref={metadataRef} className="metadata">

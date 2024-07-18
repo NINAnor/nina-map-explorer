@@ -7,16 +7,18 @@ import { Card, Columns } from "react-bulma-components";
 export function MapsList() {
   const { isPending, data } = useQuery({
     queryKey: ["portal-layers"],
-    queryFn: () => mapApi(`portals/${window.PORTAL_KEY}/maps/`),
+    queryFn: () => mapApi(`portal-maps/?portal__uuid=${window.PORTAL_KEY}`),
   });
 
   if (isPending) {
     return <p>Loading...</p>;
   }
 
+  console.log(data);
+
   return (
     <Columns multiline>
-      {data.data.map((d) => (
+      {data.data.results.map((d) => (
         <Columns.Column
           key={d.slug}
           mobile={{ size: 12 }}
@@ -26,7 +28,7 @@ export function MapsList() {
         >
           <Card px={2}>
             <Card.Header>
-              <Card.Header.Title>{d.title}</Card.Header.Title>
+              <Card.Header.Title>{d.map.title}</Card.Header.Title>
               <Card.Header.Icon>
                 {d.visibility === "public" ? (
                   <i className="fas fa-globe"></i>
@@ -35,17 +37,17 @@ export function MapsList() {
                 )}
               </Card.Header.Icon>
             </Card.Header>
-            {d.short_description && (
+            {d.map.subtitle && (
               <Card.Content>
-                <p>{d.short_description}</p>
+                <p>{d.map.subtitle}</p>
               </Card.Content>
             )}
-            {d.cover && <Card.Image size="4by3" src={d.cover} />}
+            {d.map.logo && <Card.Image size="4by3" src={d.map.logo} />}
             <Card.Footer>
               <Card.Footer.Item>
                 <Link
                   to={viewerRoute.to}
-                  params={{ mapSlug: d.slug }}
+                  params={{ mapSlug: d.map.slug }}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

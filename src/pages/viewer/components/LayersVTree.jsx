@@ -7,55 +7,42 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { HD_SIZE } from "../../../constants";
 import { useMediaQuery } from "react-responsive";
+import { useStore } from "@tanstack/react-store";
+import { mapStore, selectors } from "../mapStore";
 
-function flyToLayer(map, layer) {
-  if (map && layer && layer.source) {
-    let bounds = map.getSource(layer.source).bounds;
-    map.fitBounds(bounds);
-  }
-}
+function useLegendSymbol(layer) {
+  const zoom = useStore(mapStore, selectors.getZoom);
 
-function Layer({ data }) {
-  const { map, layers, lazy, config, visibleLayers } = useContext(MapContext);
-  const layer = layers[data.id];
-
-  const icon = layer && layer.isVisible ? "fas fa-eye" : "fas fa-eye-slash";
-
-  const updateVisibility = () => {
-    if (config && config.exclusive_layers) {
-      for (const lid of visibleLayers) {
-        map.setLayoutProperty(lid, "visibility", "none");
-      }
-    }
-
-    if (layer) {
-      map.setLayoutProperty(
-        data.id,
-        "visibility",
-        layer.isVisible ? "none" : "visible",
-      );
-    } else {
-      map.addLayer(lazy.layers[data.id]);
-    }
-  };
-
-  const legend = useMemo(() => {
+  return useMemo(() => {
     try {
-      if (layer) {
-        return LegendSymbol(layer, map);
-      } else if (lazy.layers && lazy.layers[data.id]) {
-        return LegendSymbol(lazy.layers[data.id], map);
-      }
-      return null;
+      return LegendSymbol(layer, zoom);
     } catch (e) {
       return null;
     }
-  }, [layer, lazy]);
+  }, [layer, zoom]);
+}
+
+function useLayer(layerId) {
+  const selector = useMemo(() => selectors.getLayer(layerId), [layerId]);
+  return useStore(mapStore, selector);
+}
+
+function Layer({ data }) {
+  const { updateVisibility, flyToLayer } = useContext(MapContext);
+  const layer = useLayer(data.id);
+  const visibleLayers = useStore(mapStore, selectors.getVisibleLayers);
+  const legend = useLegendSymbol(layer);
+  const fly = useMemo(() => {
+    return flyToLayer ? () => flyToLayer(layer) : null;
+  }, [layer, flyToLayer]);
+  const isVisible = visibleLayers.includes(data.id);
+
+  const icon = isVisible ? "fas fa-eye" : "fas fa-eye-slash";
 
   return (
     <>
       <div>
-        <a onClick={updateVisibility}>
+        <a onClick={() => updateVisibility(layer, isVisible)}>
           <Icon>
             <i className={icon}></i>
           </Icon>
@@ -64,20 +51,15 @@ function Layer({ data }) {
       <div className="legend-wrapper">{legend}</div>
       <div className="node-name">{data.name}</div>
       <ComponentDropdown data={data}>
-        {config &&
-          config.zoom_to_extend &&
-          map &&
-          layer &&
-          layer.isVisible &&
-          layer.source && (
-            <MenuItem>
-              <a onClick={() => flyToLayer(map, layer)}>
-                <Icon>
-                  <i className="fas fa-expand"></i>
-                </Icon>
-              </a>
-            </MenuItem>
-          )}
+        {fly && isVisible && layer.source && (
+          <MenuItem>
+            <a onClick={fly}>
+              <Icon>
+                <i className="fas fa-expand"></i>
+              </Icon>
+            </a>
+          </MenuItem>
+        )}
       </ComponentDropdown>
     </>
   );
@@ -173,7 +155,6 @@ const getNodeData = (node, nestingLevel, isSmallScreen) => ({
     defaultHeight: isSmallScreen
       ? 30
       : (Math.round(node.name.length / 80) + 1) * 30,
-    // defaultHeight: 60,
     id: node.id.toString(), // mandatory
     isLeaf: node.children ? node.children.length === 0 : true,
     isOpenByDefault: true, // mandatory
@@ -184,8 +165,10 @@ const getNodeData = (node, nestingLevel, isSmallScreen) => ({
   node,
 });
 
-export default function Layers({ layers = [] }) {
+export default function Layers() {
   const isSmallScreen = useMediaQuery({ maxWidth: HD_SIZE });
+
+  const layers = useStore(mapStore, selectors.getTree);
 
   const tw = useMemo(() => {
     function* treeWalker() {
@@ -214,6 +197,10 @@ export default function Layers({ layers = [] }) {
 
     return treeWalker;
   }, [layers, isSmallScreen]);
+
+  if (!layers) {
+    return null;
+  }
 
   return (
     <div className="layers">

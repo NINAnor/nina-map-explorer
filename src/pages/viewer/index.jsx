@@ -2,35 +2,18 @@ import { ErrorComponent, Route } from "@tanstack/react-router";
 import rootRoute from "../root";
 import Map from "./components/Map";
 import MapContextProvider from "./components/MapContextProvider";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import mapApi from "../../api";
 import { Element } from "react-bulma-components";
-import { Helmet } from "react-helmet";
 import ModalContextProvider from "./components/ModalContextProvider";
-import Lazy from "./components/Lazy";
 import ErrorWrapper from "../../components/ErrorWrapper";
 import Footer from "../../components/Footer";
 import SidebarWidget from "./components/SidebarWidget";
 import Sidebar from "./components/Sidebar";
-
-const fetchMap = async (mapSlug) => {
-  const map = await mapApi.get(`maps/${mapSlug}/metadata/`);
-  return map;
-};
-
-const mapQueryOptions = (mapSlug) =>
-  queryOptions({
-    queryKey: ["maps", { mapSlug }],
-    queryFn: () => fetchMap(mapSlug),
-  });
 
 export const viewerRoute = new Route({
   component: Viewer,
   path: "datasets/$mapSlug",
   getParentRoute: () => rootRoute,
   errorComponent: MapErrorComponent,
-  loader: ({ context: { queryClient }, params: { mapSlug } }) =>
-    queryClient.ensureQueryData(mapQueryOptions(mapSlug)),
 });
 
 function MapErrorComponent({ error }) {
@@ -58,22 +41,18 @@ function MapErrorComponent({ error }) {
 
 export function Viewer() {
   const { mapSlug } = viewerRoute.useParams();
-  const mapQuery = useSuspenseQuery(mapQueryOptions(mapSlug));
-  const mapData = mapQuery.data;
 
   return (
-    <MapContextProvider>
+    <MapContextProvider mapSlug={mapSlug}>
       <ModalContextProvider>
-        <Helmet title={mapData.data.title} />
         <div id="app-wrap" style={{ display: "flex" }}>
-          <Sidebar data={mapData} />
+          <Sidebar />
           <Element id="content">
-            <Map {...mapData.data} />
+            <Map />
             <SidebarWidget />
             <Footer />
           </Element>
         </div>
-        <Lazy lazy={mapData.data.lazy} />
       </ModalContextProvider>
     </MapContextProvider>
   );

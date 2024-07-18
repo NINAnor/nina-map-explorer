@@ -1,16 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { MapContext } from "../contexts";
 import { Image, Box, Element } from "react-bulma-components";
-import { BACKGROUND_LAYER_ID, BACKGROUND_TILES } from "../../../constants";
+import { BACKGROUND_TILES } from "../../../constants";
+import { useStore } from "@tanstack/react-store";
+import { mapStore, selectors } from "../mapStore";
 
-function BasemapElement({
-  metadata,
-  active = false,
-  onClick,
-  // id,
-  map,
-  source,
-}) {
+function BasemapElement({ metadata, active = false, onClick, map, source }) {
   const [url, setUrl] = useState(null);
 
   useEffect(() => {
@@ -49,34 +44,24 @@ function BasemapElement({
   );
 }
 
-function BasemapWidget({ map, active, layers }) {
-  const setActiveBasemap = (layerId) => {
-    map.setLayoutProperty(active.id, "visibility", "none");
-    map.moveLayer(BACKGROUND_LAYER_ID, layerId);
-    map.setLayoutProperty(layerId, "visibility", "visible");
-  };
+export default function BasemapWidget() {
+  const { map, setActiveBasemap } = useContext(MapContext);
+  const basemaps = useStore(mapStore, selectors.getBasemaps);
+  const active = useStore(mapStore, selectors.getActiveBasemap);
 
   return (
     <div id="basemap">
       <Element display="flex">
-        {layers.map((b) => (
+        {basemaps.map((b) => (
           <BasemapElement
             key={b.id}
-            active={b.id === active.id}
+            active={active.id === b.id}
             {...b}
-            onClick={() => setActiveBasemap(b.id)}
+            onClick={() => setActiveBasemap(active.id, b.id)}
             map={map}
           />
         ))}
       </Element>
     </div>
   );
-}
-
-export default function BasemapWidgetWrapper() {
-  const { basemaps, map } = useContext(MapContext);
-  if (!basemaps || !basemaps.active) {
-    return null;
-  }
-  return <BasemapWidget map={map} {...basemaps} />;
 }

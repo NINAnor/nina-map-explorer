@@ -1,128 +1,135 @@
-import React from "react";
+import React, { useCallback, useLayoutEffect, useMemo } from "react";
 import { MapContext } from "../contexts";
-import maplibregl from "maplibre-gl";
-import find from "lodash/find";
 
-function getLayer(layerId, style) {
-  const layer = find(style.layers, (l) => l.id === layerId);
-  if (layer) {
-    layer.isVisible =
-      layer && layer.layout && layer.layout.visibility === "none"
-        ? false
-        : true;
-  }
-  return layer;
+import {
+  geocoderApi,
+  transformRequest,
+  maplibregl,
+  setCursorStyle,
+  popup,
+} from "./maplibre-helpers";
+import MaplibreGeocoder from "@maplibre/maplibre-gl-geocoder";
+import { mapStore, selectors, setStyle } from "../mapStore";
+import { useStore } from "@tanstack/react-store";
+import { BACKGROUND_LAYER_ID } from "../../../constants";
+
+function registerFunctions(map, layerId) {
+  map.current.on("click", layerId, (e) => popup(e).addTo(map.current));
+  map.current.on("mouseenter", layerId, () =>
+    setCursorStyle("pointer", map.current),
+  );
+  map.current.on("mouseleave", layerId, () => setCursorStyle("", map.current));
 }
 
-function popup(e) {
-  let properties = e.features[0].properties;
-  let html =
-    "<table class='table is-bordered is-striped is-narrow is-hoverable is-fullwidth'><tbody>" +
-    Object.keys(properties)
-      .map(
-        (key) => `<tr><td><b>${key}</b></td><td>${properties[key]}</td></tr>`,
-      )
-      .reduce((a, b) => a + b) +
-    "</tbody></table>";
-  return new maplibregl.Popup().setLngLat(e.lngLat).setHTML(html);
-}
-
-function setCursorStyle(style, map) {
-  map.getCanvas().style.cursor = style;
-}
-
-export default function MapContextProvider({ children }) {
+export default function MapContextProvider({ mapSlug, children }) {
   const map = React.useRef(null);
-  const [sidebar, setSidebar] = React.useState(true);
-  const [ready, setReady] = React.useState(false);
-  const [layers, setLayers] = React.useState({});
-  const [style, setStyle] = React.useState(null);
-  const [lazy, setLazy] = React.useState({ styles: {}, layers: {} });
-  const [basemaps, setBasemaps] = React.useState({
-    active: null,
-    layers: [],
-  });
-  const [visibleLayers, setVisibleLayers] = React.useState([]);
+  const mapContainerRef = React.useRef(null);
+  const visibleLayers = useStore(mapStore, selectors.getVisibleLayers);
+  const config = useStore(mapStore, selectors.getMapConfig);
 
-  const setMap = (m) => {
-    map.current = m;
-    setReady(true);
-  };
+  useLayoutEffect(() => {
+    console.log("called!");
+    map.current = new maplibregl.Map({
+      container: mapContainerRef.current,
+      style: `${window.API_URL}maps/${mapSlug}/style/`,
+      transformRequest,
+    });
 
-  React.useEffect(() => {
+    map.current.addControl(new maplibregl.NavigationControl(), "top-right");
+    map.current.addControl(
+      new MaplibreGeocoder(geocoderApi, {
+        maplibregl: maplibregl,
+        placeholder: "Søk",
+      }),
+      "top-left",
+    );
+
     function listenStyle() {
-      const layers = {};
-      let active = null;
-      const basemaps = [];
-      const visible = [];
-      const style = map.current.getStyle();
-      for (const lid of map.current.getLayersOrder()) {
-        const layer = getLayer(lid, style);
-        layers[lid] = layer;
-        if (layer.metadata && layer.metadata.is_basemap) {
-          if (!active && layer.isVisible) {
-            active = layer;
-          }
-          basemaps.push(layer);
-        } else {
-          if (layer.isVisible) {
-            visible.push(layer.id);
-          }
-        }
-      }
-      setBasemaps({
-        active,
-        layers: basemaps,
-      });
-      setVisibleLayers(visible);
-      setLayers(layers);
+      let style = map.current.getStyle();
       setStyle(style);
     }
 
     function loadStyle() {
       const style = map.current.getStyle();
-      document.title = style.name;
-      setStyle(style);
 
       for (const layer of style.layers) {
-        map.current.on("click", layer.id, (e) => popup(e).addTo(map.current));
-        map.current.on("mouseenter", layer.id, () =>
-          setCursorStyle("pointer", map.current),
-        );
-        map.current.on("mouseleave", layer.id, () =>
-          setCursorStyle("", map.current),
-        );
+        registerFunctions(map, layer.id);
       }
     }
 
-    if (ready) {
-      map.current.on("styledata", listenStyle);
-      map.current.on("style.load", loadStyle);
-      return () => {
-        map.current.off("style.load", loadStyle);
-        map.current.off("styledata", listenStyle);
-      };
+    map.current.once("load", () => {
+      // Inject a background
+      // this is neeeded in order to avoid strange rendering issues
+      // while changing the basemap
+      const order = map.current.getLayersOrder();
+      if (order[0] !== BACKGROUND_LAYER_ID) {
+        map.current.addLayer(
+          {
+            id: BACKGROUND_LAYER_ID,
+            type: "background",
+            paint: {
+              "background-color": "#fff",
+            },
+            metadata: {},
+          },
+          order[0],
+        );
+      }
+    });
+
+    map.current.on("styledata", listenStyle);
+    map.current.on("style.load", loadStyle);
+    return () => {
+      map.current.off("styledata", listenStyle);
+      map.current.off("styledata", listenStyle);
+    };
+  }, [mapSlug]);
+
+  const updateVisibility = useCallback(
+    (layer, isVisible) => {
+      if (config.exclusive_layers) {
+        for (const lid of visibleLayers) {
+          map.current.setLayoutProperty(lid, "visibility", "none");
+        }
+      }
+
+      if (layer.loaded) {
+        map.current.setLayoutProperty(
+          layer.id,
+          "visibility",
+          isVisible ? "none" : "visible",
+        );
+      } else {
+        map.current.addLayer(layer);
+        registerFunctions(map, layer.id);
+      }
+    },
+    [visibleLayers, config],
+  );
+
+  const flyToLayer = useMemo(() => {
+    if (!config.zoom_to_extend) {
+      return null;
     }
-  }, [ready]);
+    return (layer) => {
+      if (layer && layer.source) {
+        let bounds = map.current.getSource(layer.source).bounds;
+        map.current.fitBounds(bounds);
+      }
+    };
+  }, [config]);
+
+  const setActiveBasemap = (current, next) => {
+    map.current.setLayoutProperty(current, "visibility", "none");
+    map.current.setLayoutProperty(next, "visibility", "visible");
+  };
 
   const value = {
     map: map.current,
-    setMap,
-    ready,
-    layers,
-    style,
-    lazy,
-    setLazy,
-    metadata: style ? style.metadata : null,
-    config:
-      style && style.metadata && style.metadata.config
-        ? style.metadata.config
-        : {},
-    basemaps,
-    visibleLayers,
-    setVisibleLayers,
-    setSidebar,
-    sidebar,
+    mapContainerRef,
+    updateVisibility,
+    flyToLayer,
+    setActiveBasemap,
   };
 
   return <MapContext.Provider value={value}>{children}</MapContext.Provider>;

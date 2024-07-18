@@ -3,24 +3,31 @@ import useClientHeight from "../useClientHeight";
 import { Content, Tabs } from "react-bulma-components";
 import Layers from "./LayersVTree";
 import parse from "html-react-parser";
+import { useStore } from "@tanstack/react-store";
+import { mapStore, selectors } from "../mapStore";
+
+function Description() {
+  const description = useStore(mapStore, selectors.getMapDescription);
+
+  return <Content px={2}>{parse(description)}</Content>;
+}
 
 const TABS = {
   kartlag: {
     label: "Kartlag",
-    render: (map) => <Layers layers={map.data.layers} />,
+    render: () => <Layers />,
   },
   beskrivelse: {
     label: "Beskrivelse",
-    render: (map) => <Content px={2}>{parse(map.data.description)}</Content>,
+    render: () => <Description />,
   },
 };
 
-export default function TabNav({ map, top = 0 }) {
+export default function TabNav({ top = 0 }) {
   const [active, setActive] = useState("kartlag");
-
   const { height, ref } = useClientHeight();
 
-  const render = useMemo(() => TABS[active].render(map), [active, map]);
+  const render = useMemo(() => TABS[active].render(), [active]);
 
   return (
     <>

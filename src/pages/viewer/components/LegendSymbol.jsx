@@ -58,19 +58,19 @@ function toComponent(json) {
     : null;
 }
 
-function LegendSymbol(layer, map) {
+function LegendSymbol(layer, zoom) {
   let symbol = null;
   try {
     symbol = toComponent(
       Symbol({
         sprite: layer.sprite,
-        zoom: map.getZoom(),
+        zoom,
         layer: layer,
       }),
       [layer],
     );
   } catch (e) {
-    console.error("Error while creating legend symbol", e, layer, map);
+    console.error("Error while creating legend symbol", e, layer);
   }
 
   // fallback for raster images

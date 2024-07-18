@@ -94,7 +94,13 @@ $footer-height: 40px;
   width: 250px;
   position: absolute;
   bottom: 25px + $footer-height;
-  right: 0;
+  right: 10px;
+
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+
+  text-wrap: wrap;
+  overflow-wrap: break-word;
 
   .title {
     padding-bottom: 0.2rem;

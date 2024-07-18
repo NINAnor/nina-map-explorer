@@ -1,14 +1,11 @@
-import { useCallback, useContext } from "react";
 import { Button, Icon } from "react-bulma-components";
 import MediaQuery from "react-responsive";
 import { HD_SIZE } from "../../../constants";
-import { MapContext } from "../contexts";
+import { setShowSidebar } from "../mapStore";
+
+const open = () => setShowSidebar(true);
 
 export default function SidebarWidget() {
-  const { setSidebar } = useContext(MapContext);
-
-  const open = useCallback(() => setSidebar(true), [setSidebar]);
-
   return (
     <MediaQuery maxWidth={HD_SIZE}>
       <div id="sidebar-open">

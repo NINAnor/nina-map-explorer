@@ -1,8 +1,8 @@
-import { useContext, useMemo } from "react";
-import { MapContext } from "../contexts";
 import { Box } from "react-bulma-components";
 import SequentialLegend from "./legend-types/Sequential";
 import IntervalLegend from "./legend-types/Interval";
+import { useStore } from "@tanstack/react-store";
+import { mapStore, selectors } from "../mapStore";
 
 function LegendRender({ type, ...data }) {
   switch (type) {
@@ -15,7 +15,7 @@ function LegendRender({ type, ...data }) {
   }
 }
 
-function getMapLegend(legends) {
+function MapLegend({ legends }) {
   return legends.map((legend) => {
     return (
       <div key={legend.id || legend.title} className="mb-2">
@@ -28,79 +28,31 @@ function getMapLegend(legends) {
   });
 }
 
-function getLayerLegend(layers) {
-  return (
-    Object.entries(layers)
-      // eslint-disable-next-line no-unused-vars
-      .filter(([_, value]) => {
-        if (value && value.layout && value.layout.visibility === "none") {
-          return false;
-        }
-        if (!value.metadata || !value.metadata.legend) {
-          return false;
-        }
-
-        return true;
-      })
-      .map(([key, value]) => {
-        return (
-          <div key={key} className="mb-2">
-            <p className="is-size-6">{value.metadata.name}</p>
-            <div className="py-1">
-              <LegendRender {...value.metadata.legend} />
-            </div>
-          </div>
-        );
-      })
-  );
+function LayerLegend({ layers }) {
+  return layers.map((layer) => {
+    return (
+      <div key={layer.id} className="mb-2">
+        <p className="is-size-6">{layer.metadata.name}</p>
+        <div className="py-1">
+          <LegendRender {...layer.metadata.legend} />
+        </div>
+      </div>
+    );
+  });
 }
 
-function LegendWidget({ layers, style }) {
-  const config = useMemo(
-    () =>
-      style &&
-      style.metadata &&
-      style.metadata.legend &&
-      style.metadata.legend.config
-        ? style.metadata.legend.config
-        : {
-            layerLegend: true,
-          },
-    [style],
-  );
-  const legend = useMemo(
-    () => (config.layerLegend ? getLayerLegend(layers) : null),
-    [layers, config],
-  );
-  const mapLegend = useMemo(
-    () =>
-      style &&
-      style.metadata &&
-      style.metadata.legend &&
-      style.metadata.legend.data
-        ? getMapLegend(style.metadata.legend.data)
-        : null,
-    [style],
-  );
+export default function LegendWidget() {
+  const mapLegends = useStore(mapStore, selectors.getMapLegend);
+  const layerLegends = useStore(mapStore, selectors.getVisibleLayersLegends);
 
-  if ((!legend || !legend.length) && (!mapLegend || !mapLegend.length)) {
+  if (!mapLegends && (!layerLegends || !layerLegends.length)) {
     return null;
   }
 
   return (
     <Box id="legend-box">
-      {mapLegend}
-      {legend}
+      {mapLegends && <MapLegend legends={mapLegends} />}
+      {layerLegends && <LayerLegend layers={layerLegends} />}
     </Box>
   );
-}
-
-export default function LegendWidgetWrapper() {
-  const { layers, style } = useContext(MapContext);
-
-  if (!style) {
-    return null;
-  }
-
-  return <LegendWidget layers={layers} style={style} />;
 }
