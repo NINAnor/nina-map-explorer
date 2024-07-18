@@ -8,6 +8,7 @@ import ErrorWrapper from "../../components/ErrorWrapper";
 import Footer from "../../components/Footer";
 import SidebarWidget from "./components/SidebarWidget";
 import Sidebar from "./components/Sidebar";
+import { Toaster } from "react-hot-toast";
 
 export const viewerRoute = new Route({
   component: Viewer,
@@ -43,17 +44,20 @@ export function Viewer() {
   const { mapSlug } = viewerRoute.useParams();
 
   return (
-    <MapContextProvider mapSlug={mapSlug}>
-      <ModalContextProvider>
-        <div id="app-wrap" style={{ display: "flex" }}>
-          <Sidebar />
-          <Element id="content">
-            <Map />
-            <SidebarWidget />
-            <Footer />
-          </Element>
-        </div>
-      </ModalContextProvider>
-    </MapContextProvider>
+    <>
+      <Toaster position="top center" />
+      <MapContextProvider mapSlug={mapSlug}>
+        <ModalContextProvider>
+          <div id="app-wrap" style={{ display: "flex" }}>
+            <Sidebar />
+            <Element id="content">
+              <Map />
+              <SidebarWidget />
+              <Footer />
+            </Element>
+          </div>
+        </ModalContextProvider>
+      </MapContextProvider>
+    </>
   );
 }

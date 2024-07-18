@@ -12,6 +12,23 @@ import MaplibreGeocoder from "@maplibre/maplibre-gl-geocoder";
 import { mapStore, selectors, setStyle } from "../mapStore";
 import { useStore } from "@tanstack/react-store";
 import { BACKGROUND_LAYER_ID } from "../../../constants";
+import toast from "react-hot-toast";
+
+function handleError(e) {
+  console.log(e);
+  let text = "There was an error!";
+
+  // TODO: improve error handling
+  if (e.error instanceof maplibregl.AJAXError) {
+    if (e.error.status === 404) {
+      text = "Map not found";
+    }
+  } else {
+    console.error(e.error);
+  }
+
+  toast.error(text);
+}
 
 function registerFunctions(map, layerId) {
   map.current.on("click", layerId, (e) => popup(e).addTo(map.current));
@@ -79,9 +96,11 @@ export default function MapContextProvider({ mapSlug, children }) {
 
     map.current.on("styledata", listenStyle);
     map.current.on("style.load", loadStyle);
+    map.current.on("error", handleError);
     return () => {
       map.current.off("styledata", listenStyle);
       map.current.off("styledata", listenStyle);
+      map.current.off("error", handleError);
     };
   }, [mapSlug]);
 
