@@ -63,7 +63,7 @@ function LegendSymbol(layer, zoom) {
   try {
     symbol = toComponent(
       Symbol({
-        sprite: layer.sprite,
+        sprite: layer?.sprite,
         zoom,
         layer: layer,
       }),

@@ -156,7 +156,7 @@ const getNodeData = (node, nestingLevel, isSmallScreen) => ({
       ? 30
       : (Math.round(node.name.length / 80) + 1) * 30,
     id: node.id.toString(), // mandatory
-    isLeaf: node.children ? node.children.length === 0 : true,
+    isLeaf: !node.children,
     isOpenByDefault: true, // mandatory
     name: node.name,
     nestingLevel,
