@@ -7,6 +7,8 @@ export const mapStore = new Store({
   visibleLayerIds: [],
 });
 
+// Used to modify the store
+// creates indexes for layers and visibility
 export const setStyle = (style) => {
   const layers = {};
   const visibleLayerIds = [];
@@ -15,6 +17,8 @@ export const setStyle = (style) => {
     layers[l.id] = {
       ...l,
       // this means that the layer is actually loaded!
+      // useful to distinguish if a layer was loaded
+      // or is just present in the catalogue
       loaded: true,
     };
 
@@ -44,6 +48,8 @@ function isStyleReady(state) {
   return !!state.style;
 }
 
+// selectors acts as a fast way to extract data
+// selectors are reactive
 export const selectors = {
   getMapZoom: (state) => state.style?.zoom,
   getMapTitle: (state) => state.style?.metadata?.title,
