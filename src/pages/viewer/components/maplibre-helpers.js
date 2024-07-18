@@ -1,12 +1,9 @@
 import { default as mlgl } from "maplibre-gl";
 
 import * as pmtiles from "pmtiles";
-import { ProtocolV3 } from "@ninanor/maplibre-gl-cog";
 
 let protocol = new pmtiles.Protocol();
-let cogProtocol = new ProtocolV3();
 mlgl.addProtocol("pmtiles", protocol.tile);
-mlgl.addProtocol("cog", cogProtocol.tile);
 
 // This is necessary to load map styles of protected resources
 export const transformRequest =
