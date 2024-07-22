@@ -138,6 +138,15 @@ export default function MapContextProvider({ mapSlug, children }) {
     };
   }, [config]);
 
+  const flyToBounds = useMemo(() => {
+    if (!config.zoom_to_extend) {
+      return null;
+    }
+    return (bounds) => {
+      map.current.fitBounds(bounds);
+    };
+  }, [config]);
+
   const setActiveBasemap = (current, next) => {
     map.current.setLayoutProperty(current, "visibility", "none");
     map.current.setLayoutProperty(next, "visibility", "visible");
@@ -148,6 +157,7 @@ export default function MapContextProvider({ mapSlug, children }) {
     mapContainerRef,
     updateVisibility,
     flyToLayer,
+    flyToBounds,
     setActiveBasemap,
   };
 

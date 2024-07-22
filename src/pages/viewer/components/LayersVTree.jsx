@@ -66,6 +66,12 @@ function Layer({ data }) {
 }
 
 function Group({ data, isOpen, toggle }) {
+  const { flyToBounds } = useContext(MapContext);
+
+  const fly = useMemo(() => {
+    return flyToBounds ? () => flyToBounds(data.bbox) : null;
+  }, [data.bbox, flyToBounds]);
+
   return (
     <>
       <a onClick={toggle}>
@@ -74,7 +80,17 @@ function Group({ data, isOpen, toggle }) {
         </Icon>
       </a>
       <div className="node-name">{data.name}</div>
-      <ComponentDropdown data={data} />
+      <ComponentDropdown data={data}>
+        {fly && data.bbox && (
+          <MenuItem>
+            <a onClick={fly}>
+              <Icon>
+                <i className="fas fa-expand"></i>
+              </Icon>
+            </a>
+          </MenuItem>
+        )}
+      </ComponentDropdown>
     </>
   );
 }
@@ -157,7 +173,7 @@ const getNodeData = (node, nestingLevel, isSmallScreen) => ({
       : (Math.round(node.name.length / 80) + 1) * 30,
     id: node.id.toString(), // mandatory
     isLeaf: !node.children,
-    isOpenByDefault: true, // mandatory
+    isOpenByDefault: node.is_open, // mandatory
     name: node.name,
     nestingLevel,
   },
