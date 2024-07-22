@@ -127,7 +127,7 @@ export default function MapContextProvider({ mapSlug, children }) {
   );
 
   const flyToLayer = useMemo(() => {
-    if (!config.zoom_to_extend) {
+    if (!config.zoom_to_extent) {
       return null;
     }
     return (layer) => {
@@ -139,7 +139,7 @@ export default function MapContextProvider({ mapSlug, children }) {
   }, [config]);
 
   const flyToBounds = useMemo(() => {
-    if (!config.zoom_to_extend) {
+    if (!config.zoom_to_extent) {
       return null;
     }
     return (bounds) => {
