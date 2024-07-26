@@ -7,7 +7,7 @@ import { Card, Columns } from "react-bulma-components";
 export function MapsList() {
   const { isPending, data } = useQuery({
     queryKey: ["portal-layers"],
-    queryFn: () => mapApi(`portal-maps/?portal__uuid=${window.PORTAL_KEY}`),
+    queryFn: () => mapApi(`portal-maps/?portal=${window.PORTAL_KEY}`),
   });
 
   if (isPending) {
