@@ -43,7 +43,7 @@ export default function Metadata({ metadataRef }) {
   const metadata = useStore(mapStore, selectors.getMetadata);
 
   const layout = useMemo(() => {
-    if (metadata.logo_layout === "vertical") {
+    if (metadata.config.logo_layout === "vertical") {
       return <Vertical {...metadata} />;
     }
 
