@@ -41,14 +41,15 @@ function Horizontal({ title, subtitle, logo }) {
 
 export default function Metadata({ metadataRef }) {
   const metadata = useStore(mapStore, selectors.getMetadata);
+  const config = useStore(mapStore, selectors.getMapConfig);
 
   const layout = useMemo(() => {
-    if (metadata.config.logo_layout === "vertical") {
+    if (config.logo_layout === "vertical") {
       return <Vertical {...metadata} />;
     }
 
     return <Horizontal {...metadata} />;
-  }, [metadata]);
+  }, [metadata, config]);
 
   return (
     <div ref={metadataRef} className="metadata">
