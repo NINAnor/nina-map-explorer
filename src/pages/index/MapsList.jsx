@@ -30,7 +30,7 @@ export function MapsList() {
             <Card.Header>
               <Card.Header.Title>{d.map.title}</Card.Header.Title>
               <Card.Header.Icon>
-                {d.visibility === "public" ? (
+                {d.map.visibility === "public" ? (
                   <i className="fas fa-globe"></i>
                 ) : (
                   <i className="fas fa-lock"></i>
@@ -42,7 +42,7 @@ export function MapsList() {
                 <p>{d.map.subtitle}</p>
               </Card.Content>
             )}
-            {d.map.logo && <Card.Image size="4by3" src={d.map.logo} />}
+            {/* {d.map.logo && <Card.Image size="4by3" src={d.map.logo} />} */}
             <Card.Footer>
               <Card.Footer.Item>
                 <Link
