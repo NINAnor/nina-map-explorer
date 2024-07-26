@@ -55,9 +55,9 @@ export default function BasemapWidget() {
         {basemaps.map((b) => (
           <BasemapElement
             key={b.id}
-            active={active.id === b.id}
+            active={active?.id === b.id}
             {...b}
-            onClick={() => setActiveBasemap(active.id, b.id)}
+            onClick={() => setActiveBasemap(active?.id, b.id)}
             map={map}
           />
         ))}

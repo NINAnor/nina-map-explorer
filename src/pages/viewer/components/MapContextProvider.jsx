@@ -43,6 +43,7 @@ export default function MapContextProvider({ mapSlug, children }) {
   const mapContainerRef = React.useRef(null);
   const visibleLayers = useStore(mapStore, selectors.getVisibleLayers);
   const config = useStore(mapStore, selectors.getMapConfig);
+  const basemap = useStore(mapStore, selectors.getActiveBasemap);
 
   useLayoutEffect(() => {
     console.log("called!");
@@ -108,7 +109,9 @@ export default function MapContextProvider({ mapSlug, children }) {
     (layer, isVisible) => {
       if (config.exclusive_layers) {
         for (const lid of visibleLayers) {
-          map.current.setLayoutProperty(lid, "visibility", "none");
+          if (lid != BACKGROUND_LAYER_ID && lid != basemap?.id) {
+            map.current.setLayoutProperty(lid, "visibility", "none");
+          }
         }
       }
 
