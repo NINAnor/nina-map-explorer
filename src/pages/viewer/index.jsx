@@ -48,7 +48,7 @@ export function Viewer() {
       <Toaster position="top center" />
       <MapContextProvider mapSlug={mapSlug}>
         <ModalContextProvider>
-          <div id="app-wrap" style={{ display: "flex" }}>
+          <div id="app-wrap">
             <Sidebar />
             <Element id="content">
               <Map />

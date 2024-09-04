@@ -9,7 +9,11 @@ import { mapStore, selectors } from "../mapStore";
 function Description() {
   const description = useStore(mapStore, selectors.getMapDescription);
 
-  return <Content px={2}>{parse(description)}</Content>;
+  return (
+    <div className="description">
+      <Content px={2}>{parse(description)}</Content>
+    </div>
+  );
 }
 
 const TABS = {
@@ -31,14 +35,19 @@ export default function TabNav({ top = 0 }) {
 
   return (
     <>
-      <Tabs fullwidth mt={3} domRef={ref}>
+      <Tabs fullwidth domRef={ref}>
         {Object.keys(TABS).map((k) => (
           <Tabs.Tab active={k === active} key={k} onClick={() => setActive(k)}>
             {TABS[k].label}
           </Tabs.Tab>
         ))}
       </Tabs>
-      <div style={{ height: `calc(100vh - ${height + top}px)` }}>{render}</div>
+      <div
+        className="max-wrapper"
+        style={{ height: `calc(100vh - ${height + top}px)` }}
+      >
+        {render}
+      </div>
     </>
   );
 }
