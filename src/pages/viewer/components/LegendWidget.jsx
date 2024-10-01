@@ -3,6 +3,7 @@ import SequentialLegend from "./legend-types/Sequential";
 import IntervalLegend from "./legend-types/Interval";
 import { useStore } from "@tanstack/react-store";
 import { mapStore, selectors } from "../mapStore";
+import ImageLegend from "./legend-types/Image";
 
 function LegendRender({ type, ...data }) {
   switch (type) {
@@ -10,6 +11,8 @@ function LegendRender({ type, ...data }) {
       return <SequentialLegend {...data} />;
     case "interval":
       return <IntervalLegend {...data} />;
+    case "wms":
+      return <ImageLegend {...data} />;
     default:
       null;
   }
