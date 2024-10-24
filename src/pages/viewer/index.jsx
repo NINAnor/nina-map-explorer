@@ -12,7 +12,7 @@ import { Toaster } from "react-hot-toast";
 
 export const viewerRoute = new Route({
   component: Viewer,
-  path: "datasets/$mapSlug",
+  path: "/$mapSlug",
   getParentRoute: () => rootRoute,
   errorComponent: MapErrorComponent,
 });
