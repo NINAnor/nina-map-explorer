@@ -1,14 +1,14 @@
-x-common-nginx:
-  &common-nginx
+x-common-nginx: &common-nginx
   ports:
-    - 8001:80
+    - 3000:80
 
 services:
   nginx:
     <<: *common-nginx
     profiles:
       - prod
-    image: ghcr.io/ninanor/nina-map-explorer:main
+    volumes:
+      - ./config.js:/var/www/config.js
     build: .
 
   vite:

@@ -1,0 +1,11 @@
+window.API_URL = "";
+window.PORTAL_KEY = "";
+
+window.TRANSFORM_REQUEST = (url, resourceType) => {
+  if (resourceType === "Style" && url.startsWith("MY-BACKEND-URL")) {
+    return {
+      url: url,
+      credentials: "include",
+    };
+  }
+};

@@ -12,6 +12,7 @@ const router = new Router({
   context: { queryClient },
   defaultPreloadStaleTime: 0,
   defaultPreload: "intent",
+  basepath: window.BASE_PATH,
 });
 
 export default router;
