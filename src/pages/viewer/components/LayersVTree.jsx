@@ -214,7 +214,7 @@ export default function Layers() {
     return treeWalker;
   }, [layers, isSmallScreen]);
 
-  if (!layers) {
+  if (!layers || !layers.length) {
     return null;
   }
 
