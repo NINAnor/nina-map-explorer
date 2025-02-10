@@ -3,8 +3,8 @@ server {
     server_name  localhost;
     root   /var/www;
 
-    location ~ ^/dataset/(.*)$ {
-        return 300 /$1;
+    location ~ ^/datasets/(.*)$ {
+        return 302 /$1;
     }
 
     location / {
