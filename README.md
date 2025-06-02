@@ -22,6 +22,8 @@ docker run --rm -ti -v $PWD:/host --workdir /host ghcr.io/osgeo/gdal \
 
 Full documentation is available at [gdal.org/drivers/vector/pmtiles.html](https://gdal.org/drivers/vector/pmtiles.html).
 
+[Tippecanoe](https://github.com/mapbox/tippecanoe) is a more flexible alternative, and it is used by [vector-to-pmtiles](https://github.com/NINAnor/datatoolbox-nina/tree/main/vector-to-pmtiles).
+
 
 ## COG conversion
 Raster images should be converted a 4 bands RGBA GEOTiff using EPSG:3857.
