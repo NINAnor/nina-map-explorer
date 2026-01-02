@@ -1,5 +1,8 @@
 # NINA map explorer
 
+
+**NOTE**: the development of this software is stopped and got a major rewrite at: https://github.com/NINAnor/map-editor
+
 NINA map explorer is an experimental web application which renders maps defined by a [MapLibre](https://maplibre.org/maplibre-style-spec/) style, with the addition of [ProtoMaps Tiles](https://protomaps.com/docs/pmtiles) to serve complex spatial data as a single web-optimized file.
 
 ## datasets folder
